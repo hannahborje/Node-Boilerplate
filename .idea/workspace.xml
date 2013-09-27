@@ -330,7 +330,11 @@
       <created>1380296906811</created>
       <updated>1380296906811</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Jobbat med templates/views (/hero)">
+      <created>1380296990858</created>
+      <updated>1380296990858</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
