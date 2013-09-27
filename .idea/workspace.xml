@@ -2,11 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a225c244-ee14-4fca-a324-134ce4b372d5" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/views/layouts/lay2.jade" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/routes/routes.js" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/routes/index.js" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/layouts/hero.jade" afterPath="$PROJECT_DIR$/views/layouts/hero.jade" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server.js" afterPath="$PROJECT_DIR$/server.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="node-boilerplate.iws" />
@@ -60,7 +55,7 @@
       <file leaf-file-name="lay2.jade" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/views/layouts/lay2.jade">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="52" column="64" selection-start="1999" selection-end="1999" vertical-scroll-proportion="1.113402" vertical-offset="240" max-vertical-offset="990">
+            <state line="52" column="64" selection-start="1999" selection-end="1999" vertical-scroll-proportion="0.72" vertical-offset="240" max-vertical-offset="990">
               <folding>
                 <marker date="1380296575637" expanded="true" signature="902:1151" placeholder="{...}" />
                 <marker date="1380296575637" expanded="true" signature="1313:1364" placeholder="{...}" />
@@ -331,7 +326,11 @@
       <created>1380270359738</created>
       <updated>1380270359738</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Jobbat med templates/views (/hero)">
+      <created>1380296906811</created>
+      <updated>1380296906811</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -358,7 +357,7 @@
     <frame x="25" y="252" width="1346" height="926" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32919255" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32919255" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32919255" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32979852" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -504,7 +503,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/views/layouts/lay2.jade">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="52" column="64" selection-start="1999" selection-end="1999" vertical-scroll-proportion="1.113402" vertical-offset="240" max-vertical-offset="990">
+        <state line="52" column="64" selection-start="1999" selection-end="1999" vertical-scroll-proportion="0.72" vertical-offset="240" max-vertical-offset="990">
           <folding>
             <marker date="1380296575637" expanded="true" signature="902:1151" placeholder="{...}" />
             <marker date="1380296575637" expanded="true" signature="1313:1364" placeholder="{...}" />
