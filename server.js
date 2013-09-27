@@ -1,8 +1,9 @@
 //setup Dependencies
 var connect = require('connect')
+    , routes = require('./routes')
     , express = require('express')
     , io = require('socket.io')
-    , port = (process.env.PORT || 8081);
+    , port = (process.env.PORT || 8082);
 
 //Setup Express
 var server = express.createServer();
@@ -57,16 +58,32 @@ io.sockets.on('connection', function(socket){
 
 /////// ADD ALL YOUR ROUTES HERE  /////////
 
-server.get('/', function(req,res){
-  res.render('index.jade', {
-    locals : { 
-              title : 'Your Page Title'
-             ,description: 'Your Page Description'
-             ,author: 'Your Name'
-             ,analyticssiteid: 'XXXXXXX' 
-            }
-  });
+/*************** Lägg i egen modul, kör require? *******************/
+
+server.get('/', routes.default);
+
+server.get('/fluid', function(req,res) {
+    res.render("./layouts/fluid.jade")
 });
+server.get('/hero', function(req,res) {
+    res.render("./layouts/hero.jade")
+});
+server.get('/marketing', function(req,res)
+{ res.render("./layouts/marketing-alternate.jade")
+});
+server.get('/narrow', function(req,res)
+{ res.render("./layouts/marketing-narrow.jade")
+});
+server.get('/signin', function(req,res) {
+    res.render("./layouts/signin.jade")
+});
+server.get('/starter', function(req,res)
+{ res.render("./layouts/starter-template.jade")
+});
+server.get('/sticky', function(req,res) {
+    res.render("./layouts/sticky-footer.jade")
+});
+
 
 
 //A Route for Creating a 500 Error (Useful to keep around)
@@ -78,6 +95,7 @@ server.get('/500', function(req, res){
 server.get('/*', function(req, res){
     throw new NotFound;
 });
+
 
 function NotFound(msg){
     this.name = 'NotFound';
