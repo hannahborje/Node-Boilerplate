@@ -1,6 +1,6 @@
 //setup Dependencies
 var connect = require('connect')
-    , routes = require('./routes')
+    , routes = require('./routes/routes')
     , express = require('express')
     , io = require('socket.io')
     , port = (process.env.PORT || 8082);
@@ -62,28 +62,18 @@ io.sockets.on('connection', function(socket){
 
 server.get('/', routes.default);
 
-server.get('/fluid', function(req,res) {
-    res.render("./layouts/fluid.jade")
-});
-server.get('/hero', function(req,res) {
-    res.render("./layouts/hero.jade")
-});
-server.get('/marketing', function(req,res)
-{ res.render("./layouts/marketing-alternate.jade")
-});
-server.get('/narrow', function(req,res)
-{ res.render("./layouts/marketing-narrow.jade")
-});
-server.get('/signin', function(req,res) {
-    res.render("./layouts/signin.jade")
-});
-server.get('/starter', function(req,res)
-{ res.render("./layouts/starter-template.jade")
-});
-server.get('/sticky', function(req,res) {
-    res.render("./layouts/sticky-footer.jade")
-});
+server.get('/index', routes.index);
 
+server.get('/fluid',  routes.fluid);
+
+server.get('/hero', routes.hero);
+
+server.get('/marketing',routes.marketing );
+
+server.get('/narrow',routes.narrow );
+server.get('/signin', routes.signin);
+server.get('/starter',routes.starter);
+server.get('/sticky', routes.sticky);
 
 
 //A Route for Creating a 500 Error (Useful to keep around)
@@ -102,6 +92,5 @@ function NotFound(msg){
     Error.call(this, msg);
     Error.captureStackTrace(this, arguments.callee);
 }
-
 
 console.log('Listening on http://0.0.0.0:' + port );
