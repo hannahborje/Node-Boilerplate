@@ -1,12 +1,42 @@
-//setup Dependencies
+/*************************
+ *
+ * TDP013
+ * Projekt
+ * En social webbplats
+ * Programmeringsklubben
+ *
+ * Hannah Börjesson, Per Jonsson, IP2
+ * Linköpings Universitet
+ *
+ * För kravspecifikation, se http://www.ida.liu.se/~TDP013/labs/projekt.sv.shtml
+ *
+ * Appen är skapad som ett Node.js Boilerplate-projekt (v.2) i WebStorm, och använder
+ * html-boilerplate, express, connect, jade och Socket.IO
+ * (Rob Righter: https://github.com/robrighter/node-boilerplate)
+ * samt Bootstrap med Jade-templating:
+ * (Tim Reynolds: https://github.com/timReynolds/jade-bootstrap-examples)
+ *
+ * Interaktion sker även med MongoDB
+ *
+ * Kör $ node server.js för att sätta igång applikationen
+ * Öppna 0.0.0.0:8082 i Webbläsaren
+ *
+ **********************************************************************/
+
+///////////////////////
+// Setup Dependencies //
+///////////////////////
 var connect = require('connect')
     , routes = require('./routes/routes')
     , express = require('express')
     , io = require('socket.io')
     , port = (process.env.PORT || 8082);
 
-//Setup Express
+//////////////////
+//Setup Express //
+//////////////////
 var server = express.createServer();
+
 server.configure(function(){
     server.set('views', __dirname + '/views');
     server.set('view options', { layout: false });
@@ -17,7 +47,7 @@ server.configure(function(){
     server.use(server.router);
 });
 
-//setup the errors
+// Setup the errors//
 server.error(function(err, req, res, next){
     if (err instanceof NotFound) {
         res.render('404.jade', { locals: { 
@@ -36,9 +66,13 @@ server.error(function(err, req, res, next){
                 },status: 500 });
     }
 });
-server.listen( port);
 
-//Setup Socket.IO
+// Listen
+server.listen(port);
+
+/////////////////////
+// Setup Socket.IO //
+/////////////////////
 var io = io.listen(server);
 io.sockets.on('connection', function(socket){
   console.log('Client Connected');
@@ -56,25 +90,12 @@ io.sockets.on('connection', function(socket){
 //              Routes                   //
 ///////////////////////////////////////////
 
-/////// ADD ALL YOUR ROUTES HERE  /////////
-
-/*************** Lägg i egen modul, kör require? *******************/
-
-server.get('/', routes.default);
-
-server.get('/index', routes.index);
-
-server.get('/fluid',  routes.fluid);
-
-server.get('/hero', routes.hero);
-
-server.get('/marketing',routes.marketing );
-
-server.get('/narrow',routes.narrow );
+server.get('/', routes.start);
+server.get('/index', routes.index); // ej vår
+server.get('/fluid', routes.fluid); // ej vår
+server.get('/register', routes.register);
 server.get('/signin', routes.signin);
-server.get('/starter',routes.starter);
-server.get('/sticky', routes.sticky);
-
+server.get('/explore', routes.explore);
 
 //A Route for Creating a 500 Error (Useful to keep around)
 server.get('/500', function(req, res){

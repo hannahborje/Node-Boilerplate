@@ -1,59 +1,37 @@
-
 /*
+ *
  *
  */
 
+var headOptions =  { locals: {
+    title : 'Your Page Title'
+        ,description: 'Your Page Description'
+        ,author: 'Your Name'
+        ,analyticssiteid: 'XXXXXXX'
+}};
 
+
+// Ta ej bort, Innehåller intressant funktionalitet
 exports.index = function(req,res) {
-    res.render("index.jade",  {
-        locals : {
-            title : 'Your Page Title'
-            ,description: 'Your Page Description'
-            ,author: 'Your Name'
-            ,analyticssiteid: 'XXXXXXX'
-        }
-    });
+    res.render("index.jade",  headOptions);
 };
 
-exports.default = function(req,res) {
-    res.render("default.jade", {
-     locals : {
-     title : 'Your Page Title'
-     ,description: 'Your Page Description'
-     ,author: 'Your Name'
-     ,analyticssiteid: 'XXXXXXX'
-     }
-    });
 
+exports.start = function(req,res) {
+    headOptions.locals.title = "Programmeringsklubben";
+    res.render("./start.jade", headOptions);
 };
 
-exports.fluid = function(req,res) {
-    res.render("./layouts/fluid.jade");
+exports.explore = function(req,res) {
+    headOptions.locals.title = "Utforska Programmeringsklubben";
+    res.render("./explore.jade", headOptions);
 };
 
-exports.hero = function(req,res) {
-    res.render("./layouts/hero.jade");
-};
-
-exports.marketing = function(req,res) {
-    res.render("./layouts/marketing-alternate.jade");
-};
-
-exports.narrow = function(req,res) {
-    res.render("./layouts/marketing-narrow.jade");
+exports.register = function(req,res) {
+    res.render("./register.jade", headOptions);
 };
 
 exports.signin = function(req,res) {
-    res.render("./layouts/signin.jade");
+    res.render("./signin.jade", headOptions);
 };
-
-exports.starter = function(req,res){
-    res.render("./layouts/starter-template.jade");
-};
-
-exports.sticky = function(req,res) {
-    res.render("./layouts/sticky-footer.jade");
-};
-
-
 
