@@ -1,0 +1,79 @@
+// Denna sida visas när man vill se hur Programmeringsklubben funkar
+
+extends layout
+
+block head
+    style(type='text/css')
+        body {
+            padding-top: 60px;
+            padding-bottom: 40px;
+        }
+
+block content
+    include nav-logged-in
+    .container-fluid
+      .row-fluid
+         .span3
+           .well.sidebar-nav
+             ul.nav.nav-list
+               li.nav-header
+                 | Kontrollpanel
+               li
+                 a(href='#dash') Byt lösenord >>
+               li
+                 a(href='#menu1')
+                   | Inbox
+                   span.badge #{1}
+               li.nav-header
+                   | Inbox
+               li
+                 p Inbox-meddelande
+
+         .span7
+           .hero-unit
+             h2 #{"FÖRNAMN"}
+             h3 #{"Efternamn"}
+             p ORT | #{"Linköping"}
+               br
+               | ÅLDER | #{"42"}
+               br
+               | YRKE | #{"Systemutvecklare"}
+               br
+               | FÖRETAG | #{"Ericsson"}
+               br
+               | UTBILDNING | #{"LiU, fil.kand."}
+           .row-fluid
+             .span4
+
+               h3
+                 span.glyphicon.glyphicon-pencil  Om mig
+               | Har jobbat i 12 år
+               h4
+                 span.glyphicon.glyphicon-pencil  Kunskaper
+               h4
+                 span.glyphicon.glyphicon-pencil  CV
+             .span4.well
+               h2 Registrera
+               p
+                 | Så här kan det se ut på din förstasida när du är medlem.
+                 br
+                 | Gillar du vad du ser?
+                 br
+                 | Registrera dig nu!
+               p
+                 a.btn.btn-success(href='#register') Registrera »
+             .span4
+               h2
+               p
+         .span2
+
+            .accordion#accordion
+                .accordion-group
+                    .accordion-heading
+                        a.accordion-toggle(href="#collapseOne", data-toggle="collapse", data-parent="#accordion2")
+                            | Vänlista >>
+                    .accordion-body.collapse.in#collapseOne
+                        .accordion-inner
+                            ul.nav
+                              li
+                                a(href="") Vän 1
