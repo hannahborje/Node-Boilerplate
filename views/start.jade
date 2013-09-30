@@ -2,29 +2,17 @@
 
 extends layout
 
-block content
-    .navbar.navbar-inverse.navbar-fixed-top
-        .navbar-inner
-            .container
-                a.btn.btn-navbar(data-toggle='collapse', data-target='.nav-collapse')
-                    span.icon-bar
-                    span.icon-bar
-                    span.icon-bar
-                a.brand(href='#') Programmeringsklubben
-                .nav-collapse.collapse
-                    ul.nav
-                        li.active
-                            a(href='#') Hem
-                        li
-                            a(href='#about') Om
-                        li
-                            a(href='#explore') Utforska
+block head
+    style(type='text/css')
+        body {
+            padding-top: 60px;
+            padding-bottom: 40px;
+        }
 
-                    form.navbar-form.pull-right
-                        input.span2(type='text', placeholder='Email')
-                        input.span2(type='password', placeholder='Lösenord')
-                        button.btn(type='submit') Logga in
-                        button.btn.btn-success(type='submit') Registrera
+
+block content
+    include nav-start
+
     .container
         .hero-unit
             h1 Välkommen!
@@ -51,6 +39,7 @@ block content
                     | Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.
                 p
                     a.btn(href='#') Utforskning »
+
 
 block footer
 

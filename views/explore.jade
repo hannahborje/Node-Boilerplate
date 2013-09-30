@@ -2,27 +2,15 @@
 
 extends layout
 
-block content
-    .navbar.navbar-inverse.navbar-fixed-top
-      .navbar-inner
-        .container-fluid
-          a.btn.btn-navbar(data-toggle='collapse', data-target='.nav-collapse')
-            span.icon-bar
-            span.icon-bar
-            span.icon-bar
-          a.brand(href='#') Programmeringsklubben
-          .nav-collapse.collapse
-            ul.nav
-              li
-                a(href='#') Hem
-              li
-                a(href='#about') Om
-              li.active
-                a(href='#contact') Utforska
-            p.navbar-text.pull-right
-              | Inloggad som
-              a.navbar-link(href='#') Användarnamn
+block head
+    style(type='text/css')
+        body {
+            padding-top: 60px;
+            padding-bottom: 40px;
+        }
 
+block content
+    include nav-logged-in
     .container-fluid
       .row-fluid
          .span3
@@ -89,6 +77,3 @@ block content
                             ul.nav
                               li
                                 a(href="") Vän 1
-
-
-

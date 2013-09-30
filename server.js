@@ -91,11 +91,11 @@ io.sockets.on('connection', function(socket){
 ///////////////////////////////////////////
 
 server.get('/', routes.start);
+server.get('/explore', routes.explore);
 server.get('/index', routes.index); // ej vår
-server.get('/fluid', routes.fluid); // ej vår
 server.get('/register', routes.register);
 server.get('/signin', routes.signin);
-server.get('/explore', routes.explore);
+
 
 //A Route for Creating a 500 Error (Useful to keep around)
 server.get('/500', function(req, res){
