@@ -1,0 +1,46 @@
+// Startsida
+
+extends layout
+
+block head
+    style(type='text/css')
+        body {
+            padding-top: 60px;
+            padding-bottom: 40px;
+        }
+
+
+block content
+    include nav-start
+
+    .container
+        .hero-unit
+            h1 Välkommen!
+            p
+                | Bla bla bla. Programmering. Klubb. Bla bla bla. Webbplats som är social. TDP013 och såna grejer. Linköpings. Universitet. Innovativ. Programmerrring. Sär skrivning.
+            p
+                a.btn.btn-primary.btn-large Utforska  »
+        .row
+            .span4
+                h2 Logga in
+                p
+                    | Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
+                p
+                    a.btn(href='#') Inloggning »
+            .span4
+                h2 Registrera dig
+                p
+                    | Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
+                p
+                    a.btn(href='#') Registrering »
+            .span4
+                h2 Utforska
+                p
+                    | Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.
+                p
+                    a.btn(href='#') Utforskning »
+
+
+block footer
+
+
