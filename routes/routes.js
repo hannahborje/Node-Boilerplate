@@ -13,7 +13,7 @@ var headOptions =  { locals: {
 
 // Ta ej bort, Innehåller intressant funktionalitet
 exports.index = function(req,res) {
-    res.render("index.jade",  headOptions);
+    res.render("oldindex.jade",  headOptions);
 };
 
 
