@@ -31,6 +31,11 @@ exports.explore = function(req,res) {
     headOptions.locals.title = "Utforska Programmeringsklubben";
     res.render("./explore.jade", headOptions);
 };
+
+exports.friend = function(req,res) {
+    headOptions.locals.title = "Förnamn Efternamn: Programmeringsklubben";
+    res.render("./friend.jade", headOptions);
+};
 exports.register = function(req,res) {
     res.render("./register.jade", headOptions);
 };

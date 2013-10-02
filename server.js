@@ -93,6 +93,7 @@ io.sockets.on('connection', function(socket){
 server.get('/', routes.start);
 server.get('/dash', routes.dash);
 server.get('/explore', routes.explore);
+server.get('/friend', routes.friend);
 server.get('/index', routes.index); // ej vår
 server.get('/register', routes.register);
 server.get('/signin', routes.signin);

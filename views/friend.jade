@@ -1,0 +1,78 @@
+// Denna sida visas när man vill se hur Programmeringsklubben funkar
+
+extends layout
+
+block head
+    style(type='text/css')
+        body {
+            padding-top: 60px;
+            padding-bottom: 40px;
+        }
+
+block content
+    include nav-logged-in
+    .container-fluid
+      .row-fluid
+         .span3
+
+         .span7
+           .hero-unit
+             .row-fluid
+               .columnA.pull-left
+                   table.table
+                     //caption
+                       | Rubrik
+                     thead
+                        h2
+                                | #{"Förnamn"}
+                                | #{"Efternamn"}
+                     tr
+                         td
+
+                             p
+                                 | ORT
+                                 br
+                                 | ÅLDER
+                                 br
+                                 | YRKE
+                                 br
+                                 | FÖRETAG
+                                 br
+                                 | UTBILDNING
+
+                         td
+                             p
+                                | Redigera #{""}
+                                br
+                                | Redigera #{""}
+                                br
+                                | Redigera #{""}
+                                br
+                                | Redigera #{""}
+                                br
+                                | Redigera #{""}
+               .columnB.pull-right
+                 ul.thumbnails
+                   li.span10
+                     .thumbnail
+                       img.img-polaroid(src='/img/empty-pic.png')
+                       .caption
+                            p
+                              a.btn(href='#') Lägg till vän
+                              a.btn(href='#') Skriv meddelande
+           .row-fluid
+             .span4
+               h3
+                 | Om mig
+               p.lead
+                   | Redigera #{""}
+               h3
+                 | Kunskaper
+               p.lead
+                    | Redigera #{""}
+               h3
+                 | CV
+               p.lead
+                    | Redigera #{""}
+
+         .span2

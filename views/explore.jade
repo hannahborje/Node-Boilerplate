@@ -12,68 +12,124 @@ block head
 block content
     include nav-logged-in
     .container-fluid
-      .row-fluid
-         .span3
-           .well.sidebar-nav
-             ul.nav.nav-list
-               li.nav-header
-                 | Kontrollpanel
-               li
-                 a(href='#dash') Byt lösenord >>
-               li
-                 a(href='#menu1')
-                   | Inbox
-                   span.badge #{1}
-               li.nav-header
-                   | Inbox
-               li
-                 p Inbox-meddelande
+        .row-fluid
+            .span3
+                .well.sidebar-nav
+                    ul.nav.nav-list
+                        li.nav-header
+                            | Kontrollpanel
+                        li
+                            a(href='#myPass', data-toggle='modal') Byt lösenord >>
+                        li
+                            a(href='#myInbox', data-toggle='modal')
+                                | Inbox
+                                span.badge #{1}
+            include popupmsg
+            .span7
+                .hero-unit
+                    .row-fluid
+                        .columnA.pull-left
+                            table.table
+                                //caption
+                                  | Rubrik
+                                thead
+                                    h2
+                                        a#name(href='#', data-type='text', data-pk='1', data-url='/post', data-title='Förnamn')
+                                            | #{"Förnamn"}
+                                        a#surname(href='#', data-type='text', data-pk='1', data-url='/post', data-title='Efternamn')
+                                            | #{"Efternamn"}
+                                tr
+                                    td
+                                        p
+                                            | ORT
+                                            br
+                                            | ÅLDER
+                                            br
+                                            | YRKE
+                                            br
+                                            | FÖRETAG
+                                            br
+                                            | UTBILDNING
+                                    td
+                                        p
+                                            a#city(href='#', data-type='text', data-pk='1', data-url='/post', data-title='Välj ort',
+                                            data-id="", value="staden")
+                                                | Redigera #{""}
+                                            br
+                                            a#age(href='#', data-type='text', data-pk='1', data-url='/post', data-title='Ange ålder')
+                                                | Redigera #{""}
+                                            br
+                                            a#occupation(href='#', data-type='text', data-pk='1', data-url='/post', data-title='Ditt yrke')
+                                                | Redigera #{""}
+                                            br
+                                            a#company(href='#', data-type='text', data-pk='1', data-url='/post', data-title='Var jobbar du')
+                                                | Redigera #{""}
+                                            br
+                                            a#education(href='#', data-type='text', data-pk='1', data-url='/post', data-title='Utbildning')
+                                                | Redigera #{""}
+                        .columnB.pull-right
+                            ul.thumbnails
+                                li.span10
+                                    .thumbnail
+                                        img.img-polaroid(src='/img/empty-pic.png')
+                                        .caption
+                                            p
+                                                a.btn(href='#') Byt bild »
+                .row-fluid
+                    .span4
+                        h3
+                            | Om mig
+                        p.lead
+                            a#aboutme(href='#', data-type='textarea', data-pk='1', data-url='/post')
+                                | Redigera #{""}
+                        h3
+                            | Kunskaper
+                        p.lead
+                            a#knowledge(href='#', data-type='textarea', data-pk='1', data-url='/post')
+                                | Redigera #{""}
+                        h3
+                            | CV
+                        p.lead
+                            a#cv(href='#', data-type='textarea', data-pk='1', data-url='/post')
+                                | Redigera #{""}
 
-         .span7
-           .hero-unit
-             h2 #{"FÖRNAMN"}
-             h3 #{"Efternamn"}
-             p ORT | #{"Linköping"}
-               br
-               | ÅLDER | #{"42"}
-               br
-               | YRKE | #{"Systemutvecklare"}
-               br
-               | FÖRETAG | #{"Ericsson"}
-               br
-               | UTBILDNING | #{"LiU, fil.kand."}
-           .row-fluid
-             .span4
+                    .span4.well
+                        h2 Registrera
+                        p
+                            | Så här kan det se ut på din förstasida när du är medlem.
+                            br
+                            | Gillar du vad du ser?
+                            br
+                            | Registrera dig nu!
+                        p
+                            a.btn.btn-success(href='#register') Registrera »
+                    .span4
+                        h2
+                        p
+            .span2
+                .accordion#accordion
+                    .accordion-group
+                        .accordion-heading
+                            a.accordion-toggle(href="#collapseOne", data-toggle="collapse", data-parent="#accordion2")
+                                | Dina vänner >>
+                        .accordion-body.collapse.in#collapseOne
+                            .accordion-inner
+                                ul.nav
+                                    li
+                                        .well.well-small
+                                            .row-fluid
+                                                a(href="#") #{"Förnamn"} #{"Efternamn"} #{1}
+                                                .dropdown
+                                                    a.btn.btn-small.dropdown-toggle(data-toggle='dropdown', href='#')
+                                                        i.icon-trash
+                                                    ul.dropdown-menu(role='menu', aria-labelledby='dLabel')
+                                                        p Vill du ta bort
+                                                        h6 #{"Förnamn Efternamn"}?
+                                                        .row-fluid
+                                                            a.btn.btn-small(href="#") Ja
+                                                            a.btn.btn-small(href="#") Ja
+                                                    a.btn.btn-small(href="#")
+                                                        i.icon-user
+                                    // end for
+    block footer
 
-               h3
-                 span.glyphicon.glyphicon-pencil  Om mig
-               | Har jobbat i 12 år
-               h4
-                 span.glyphicon.glyphicon-pencil  Kunskaper
-               h4
-                 span.glyphicon.glyphicon-pencil  CV
-             .span4.well
-               h2 Registrera
-               p
-                 | Så här kan det se ut på din förstasida när du är medlem.
-                 br
-                 | Gillar du vad du ser?
-                 br
-                 | Registrera dig nu!
-               p
-                 a.btn.btn-success(href='#register') Registrera »
-             .span4
-               h2
-               p
-         .span2
-
-            .accordion#accordion
-                .accordion-group
-                    .accordion-heading
-                        a.accordion-toggle(href="#collapseOne", data-toggle="collapse", data-parent="#accordion2")
-                            | Vänlista >>
-                    .accordion-body.collapse.in#collapseOne
-                        .accordion-inner
-                            ul.nav
-                              li
-                                a(href="") Vän 1
