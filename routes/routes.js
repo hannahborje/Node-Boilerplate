@@ -22,11 +22,15 @@ exports.start = function(req,res) {
     res.render("./start.jade", headOptions);
 };
 
+exports.dash = function(req,res) {
+    headOptions.locals.title = "Din Programmeringsklubb";
+    res.render("./dash.jade", headOptions);
+};
+
 exports.explore = function(req,res) {
     headOptions.locals.title = "Utforska Programmeringsklubben";
     res.render("./explore.jade", headOptions);
 };
-
 exports.register = function(req,res) {
     res.render("./register.jade", headOptions);
 };
