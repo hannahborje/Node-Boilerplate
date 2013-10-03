@@ -78,7 +78,8 @@ block content
                        img.img-polaroid(src='/img/empty-pic.png')
                        .caption
                             p
-                              a.btn(href='#') Byt bild »
+                              a
+                                input(type="file", title="Byt bild")
            .row-fluid
              .span4
                h3
@@ -130,3 +131,9 @@ block content
 
 block footer
     script(src="/js/editable.js")
+    script(src="/js/bootstrap.file-input.js")
+    script
+        $(document).ready(function(){
+           $('input[type=file]').bootstrapFileInput();
+           //$('.file-inputs').bootstrapFileInput();
+        });

@@ -1,0 +1,25 @@
+// Startsida
+
+extends layout
+
+block head
+    style(type='text/css')
+        body {
+            padding-top: 60px;
+            padding-bottom: 40px;
+        }
+
+block content
+    include nav-start
+
+    .container
+        .hero-unit
+            h1 Om oss
+            p
+                | Bla bla bla. Programmering. Klubb. Bla bla bla. Webbplats som är social. TDP013 och såna grejer. Linköpings. Universitet. Innovativ. Programmerrring. Sär skrivning.
+            p
+                a(href='#contact', data-toggle='modal').btn.btn-primary.btn-large
+                   | Kontakta oss »
+            include popupmsg
+block footer
+

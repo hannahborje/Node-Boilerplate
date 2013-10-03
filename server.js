@@ -31,6 +31,9 @@ var connect = require('connect')
     , express = require('express')
     , io = require('socket.io')
     , port = (process.env.PORT || 8082);
+    //, mongo = require('mongodb');
+    //,mongoose = require('express-mongoose');//,
+    //MongooseStore
 
 //////////////////
 //Setup Express //
@@ -91,13 +94,19 @@ io.sockets.on('connection', function(socket){
 ///////////////////////////////////////////
 
 server.get('/', routes.start);
+server.get('/about', routes.about);
 server.get('/dash', routes.dash);
 server.get('/explore', routes.explore);
 server.get('/friend', routes.friend);
 server.get('/index', routes.index); // ej vår
 server.get('/register', routes.register);
 server.get('/signin', routes.signin);
+server.get('/start', routes.start);
 
+server.post('/signin', routes.signin);
+    //var username = req.param('username', null);
+    //console.log(username);
+//});
 
 //A Route for Creating a 500 Error (Useful to keep around)
 server.get('/500', function(req, res){

@@ -7,13 +7,13 @@ block content
     include nav-unlogged-in
 
     .container
-        form.form-signin
+        form(action='/signin', method='post').form-signin
             h2.form-signin-heading Registrera dig här
-            input.input-block-level(type='text', placeholder='Ditt namn')  // för/efter?
-            input.input-block-level(type='text', placeholder='Email-adress')
-            input.input-block-level(type='password', placeholder='Ange ett lösenord (krav på lösenord??)')
-            input.input-block-level(type='password', placeholder='Bekräfta lösenord')
-            button.btn.btn-large.btn-success(type='submit') Registrera
+            input.input-block-level(type='text', placeholder='Ditt namn', name="username")  // för/efter?
+            input.input-block-level(type='text', placeholder='Email-adress', name="email")
+            input.input-block-level(type='password', placeholder='Ange ett lösenord (krav på lösenord??)', name="password")
+            input.input-block-level(type='password', placeholder='Bekräfta lösenord', name="confirm")
+            button.btn.btn-large.btn-success(type='submit')#submit Registrera
 
         .row-fluid
             .span4
@@ -26,3 +26,11 @@ block content
             .span4
 
 
+block footer
+    //script
+    //    $(document).ready(function() {
+    //        $('#submit').click(function(){
+    //           console.log()
+    //        });
+    //    }
+    //    });

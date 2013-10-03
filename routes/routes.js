@@ -38,9 +38,24 @@ exports.friend = function(req,res) {
 };
 exports.register = function(req,res) {
     res.render("./register.jade", headOptions);
+
 };
 
 exports.signin = function(req,res) {
     res.render("./signin.jade", headOptions);
+
+    var username = req.param('username', null);
+    var email = req.param('email', null);
+    var password = req.param('password', null);
+    var confirm = req.param('confirm', null);
+
+    console.log(username);
+    console.log(email);
+    console.log(password);
+    console.log(confirm);
+};
+
+exports.about = function(req,res) {
+    res.render("./about.jade", headOptions);
 };
 

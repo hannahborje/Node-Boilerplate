@@ -58,8 +58,18 @@ block content
                        img.img-polaroid(src='/img/empty-pic.png')
                        .caption
                             p
-                              a.btn(href='#') Lägg till vän
-                              a.btn(href='#') Skriv meddelande
+                                .dropdown
+                                    a.btn.btn-small.dropdown-toggle(data-toggle='dropdown', href='#')
+                                        | Lägg till en vän
+                                    ul.dropdown-menu(role='menu', aria-labelledby='dLabel')
+                                        p Vill du skicka vänförfrågan?
+                                        .row-fluid
+                                            a.btn.btn-small(href="#") Ja
+                                            a.btn.btn-small(href="#") Ja
+                                .dropdown
+                                    a.btn.btn-small(href='#sendMsg', data-toggle='modal')
+                                        | Skriv meddelande
+                            include popupmsg
            .row-fluid
              .span4
                h3
