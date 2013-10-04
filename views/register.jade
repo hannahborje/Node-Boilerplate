@@ -7,30 +7,53 @@ block content
     include nav-unlogged-in
 
     .container
-        form(action='/signin', method='post').form-signin
+        form(action="/signin", method='post').form-signin#userForm
             h2.form-signin-heading Registrera dig här
-            input.input-block-level(type='text', placeholder='Ditt namn', name="username")  // för/efter?
-            input.input-block-level(type='text', placeholder='Email-adress', name="email")
-            input.input-block-level(type='password', placeholder='Ange ett lösenord (krav på lösenord??)', name="password")
-            input.input-block-level(type='password', placeholder='Bekräfta lösenord', name="confirm")
+            input.input-block-level(type='text',  placeholder='Ditt namn', name="name", required)
+            input.input-block-level(type='text',  placeholder='Email-adress (användarnamn)', name="email",required)
+            input.input-block-level(type='password', placeholder='Välj ett lösenord',
+            name="password", id="password", required)
+            input.input-block-level(type='password', placeholder='Bekräfta lösenord',
+            name="confirm", id="confirm", required)
             button.btn.btn-large.btn-success(type='submit')#submit Registrera
 
-        .row-fluid
-            .span4
-
-
-            .span4
-                //button.btn(type="submit") Hej
-                // Felmeddelanden kan skickas hit till en div kanske?
-
-            .span4
-
-
 block footer
-    //script
-    //    $(document).ready(function() {
-    //        $('#submit').click(function(){
-    //           console.log()
-    //        });
-    //    }
-    //    });
+    // Courtesy of jqueryvalidation.org ***
+    script(src='http://jquery.bassistance.de/validate/jquery.validate.js')
+    script
+        $("#userForm").validate({
+            rules: {
+              name: {
+                required: true,
+                minlength: 2
+              },
+              email: {
+                required: true,
+                email: true
+              },
+              password: {
+                required: true,
+                minlength: 4
+              },
+              confirm: {
+                required: true,
+                minlength: 4,
+                equalTo: "#password"
+              }
+            },
+            messages: {
+              name: {
+                required: "Please specify your name"
+              },
+              email: {
+                required: "We need your email address to contact you",
+                email: "Your email address must be in the format of name@domain.com"
+              },
+              password: {
+                required: "Please enter password"
+              },
+              confirm: {
+                required: "Please confirm password"
+              }
+            }
+        });

@@ -93,6 +93,11 @@ io.sockets.on('connection', function(socket){
 //              Routes                   //
 ///////////////////////////////////////////
 
+// Post requests
+server.post('/signin', routes.signin);
+//server.post('/validateSignin', routes.validateSignin);
+
+// Get requests
 server.get('/', routes.start);
 server.get('/about', routes.about);
 server.get('/dash', routes.dash);
@@ -103,10 +108,7 @@ server.get('/register', routes.register);
 server.get('/signin', routes.signin);
 server.get('/start', routes.start);
 
-server.post('/signin', routes.signin);
-    //var username = req.param('username', null);
-    //console.log(username);
-//});
+
 
 //A Route for Creating a 500 Error (Useful to keep around)
 server.get('/500', function(req, res){

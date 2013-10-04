@@ -7,12 +7,37 @@ block content
     include nav-unlogged-in
 
     .container
+        //form(action='/signin', method='post').form-signin
         form.form-signin
             h2.form-signin-heading Logga in
-            input.input-block-level(type='text', placeholder='Email-adress')
-            input.input-block-level(type='password', placeholder='Lösenord')
-            button.btn.btn-large.btn-primary(type='submit') Logga in
+            input.input-block-level(type='text', placeholder='Email-adress', name="email", required)
+            input.input-block-level(type='password', placeholder='Lösenord', name="password", required)
+            a(href="#").button.btn.btn-large.btn-primary(type='submit')#submit Logga in
+            //button.btn.btn-large.btn-primary#submit Logga in
 
     .container
-        // Felmeddelanden kan skickas hit till en div kanske?
+        // Felmeddelanden kan skickas hit till en div kanske? i options?
 
+block footer
+    script
+        $(document).ready(function() {
+            $("#submit").click(function(){
+                // Skapa asynkron AJAX-request för att göra lookup i mongoDB
+                $.ajax({
+                url : 'http://localhost:8000/authorize', // mongoserver
+                data : { user:"", pass:"" }, // parametrar i url:en
+                statusCode: {200: function() {
+                      // Logga detta om vi får 200
+                      console.log("Användare identifierad");
+                }},
+                success:function(responseData) {
+                      // Vi vill associera varje sparad tweet i trädet
+                      // med ett unikt ID från mongoDB när vi "flaggar"
+                      console.log(responseData);
+                },
+                error:function(req,data,err) {
+                  console.dir("hej" + err);
+                }
+                });
+            });
+        });
