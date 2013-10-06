@@ -117,24 +117,25 @@ io.sockets.on('connection', function(socket){
 server.post('/authorize', function(req, res){
     console.log("Authorizing:");
 
-     var user = req.param('email', '');
-     var pass = req.param('password', '');
-     console.log("server.js: catching post request for /authorize, user details:");
-     console.log(user);
-     console.log(pass);
+    var user = req.param('user', '');
+    var pass = req.param('pass', '');
+    console.log("server.js: catching post request for /authorize, user details:");
+    console.log(user);
+    console.log(pass);
 
     console.log("server.js: catching post request for /authorize, calling mongo.auth(user, pass)");
-     // se om användaren kan auktoriseras
-     if (mongo.auth(user, pass)){
-         console.log("server.js: mongo.auth() returned true");
-         console.log("res.header " +  res.headerSent); // CORS???
-         res.json("200", 200); //// var jsonString = JSON.stringify(results);
-     }else{
-         console.log("server.js: mongo.auth() returned false");
-         res.send("server, not authorized", 200);
-     }
+    // se om användaren kan auktoriseras
+    mongo.auth(user, pass);// callback eller skicka med res{
+
+    //res.json("200", 200); //// var jsonString = JSON.stringify(results);
+
+
+    //res.send("server, not authorized", 200);
+
     // /authorize ska inte renderas !!!
     //res.send("server.js: authorized: " + user + " " + pass, 200); // skickas till signin.jade, ajaxanropet där, ajax.js (CORS)
+    res.json({user: user, pass: pass}, 200);
+    //console.log("res.headerSent " +  res.headerSent); // CORS???
     //routes.dash(req, res); med options se mongoose-dokumentation
 });
 server.post('/signin', function(req, res){
@@ -143,17 +144,15 @@ server.post('/signin', function(req, res){
     var pass = req.param('password', '');
 
     console.log("server.js: catching post request for /signin, user details:");
-    console.log("Hej " + name);
+    console.log("Hello " + name);
 
-
+    console.log("server.js: -> mongo.find() trying to find user:  " + user); // ... Please login
     // Detta borde tas om hand tidigare
-    if (mongo.find(name, user)){
-        console.log("server.js: mongo.find() returned true => There already was a: " + user); // ... Please login
-    }else{
-        console.log("server.js: mongo.find() returned false => You are now registered with username: " + user); // ... Please login
-        // if not mongo.find()!! spara isf
-        mongo.save(name, user, pass); // borde tas om hand steget innan
-    }
+    mongo.find(name, user);//){ // callback, skicka med res??
+
+    // if not mongo.find()!! spara isf
+    console.log("server.js: -> mongo.save() savinguser:  " + user);
+    mongo.save(name, user, pass); // borde tas om hand steget innan
 
     // Skicka med meddelandena
     routes.signin(req ,res);

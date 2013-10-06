@@ -56,7 +56,9 @@ $(document).ready(function() {
         // Put the results in a div
 
         posting.done(function( data ) {
-            console.dir("signin.jade/jquery-script: data:" + data);
+            console.dir("signin.jade/jquery-script: data:" );
+            console.dir(data);
+
             //var content = $( data ).find( "#content" );
             //$( "#result" ).empty().append( content );
         });
