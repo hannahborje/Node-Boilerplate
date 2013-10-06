@@ -8,14 +8,14 @@ block content
 
     .container
         //form.form-signin
-        //form(id='myForm', action='/authorize', method='post').form-signin
-        form(id='myForm', method="POST").form-signin
+        //form(id='myForm', method="POST").form-signin
+        form(id='myForm', action='/authorize', method='post').form-signin
             h2.form-signin-heading Logga in
             input.input-block-level(type='text', placeholder='Email-adress', name="email", required)
             input.input-block-level(type='password', placeholder='Lösenord', name="password", required)
             //a.button.btn.btn-large.btn-primary(type='submit')#submit Logga in
             //a(href="#").button.btn.btn-large.btn-primary(type='submit')#submit Logga in
-            a.button.btn.btn-large.btn-primary#submit Logga in
+            button.btn.btn-large.btn-primary Logga in
 
     .container
         // Felmeddelanden kan skickas hit till en div kanske? i options?

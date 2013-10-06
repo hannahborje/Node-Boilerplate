@@ -47,10 +47,11 @@ exports.auth = function(username, password){
         console.dir("mongo.js .auth() found: " + docs);
 
         if (docs.length === 0){
-            console.log("mongo.js .auth(): docs are empty, no authorization");
+            console.log("mongo.js .auth(): docs are empty, no authorization, return false");
             return false;
         }
         else{
+            console.log("mongo.js .auth(): return true, authorize");
             return true;
         }
     });
@@ -63,11 +64,11 @@ exports.find = function(fullname, username){
         console.dir("mongo.js .find() resulted in: " + docs);
 
         if (docs.length === 0){
-            console.log("mongo.js .find(): docs are empty, no user occupies that name");
+            console.log("mongo.js .find() returns false: docs are empty, no user occupies that name");
             return false;
         }
         else{
-            console.log("mongo.js .find(): username is occupied! ");
+            console.log("mongo.js .find() returns true: username is occupied! ");
             return true;
         }
 

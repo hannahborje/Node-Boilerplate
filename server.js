@@ -127,10 +127,11 @@ server.post('/authorize', function(req, res){
      // se om användaren kan auktoriseras
      if (mongo.auth(user, pass)){
          console.log("server.js: mongo.auth() returned true");
-         //res.json("200", 200); //// var jsonString = JSON.stringify(results);
+         console.log("res.header " +  res.headerSent); // CORS???
+         res.json("200", 200); //// var jsonString = JSON.stringify(results);
      }else{
          console.log("server.js: mongo.auth() returned false");
-         //res.send("server, not authorized", 200);
+         res.send("server, not authorized", 200);
      }
     // /authorize ska inte renderas !!!
     //res.send("server.js: authorized: " + user + " " + pass, 200); // skickas till signin.jade, ajaxanropet där, ajax.js (CORS)
@@ -147,9 +148,9 @@ server.post('/signin', function(req, res){
 
     // Detta borde tas om hand tidigare
     if (mongo.find(name, user)){
-        console.log("There already was a: " + user); // ... Please login
+        console.log("server.js: mongo.find() returned true => There already was a: " + user); // ... Please login
     }else{
-        console.log("You are now registered with username: " + user); // ... Please login
+        console.log("server.js: mongo.find() returned false => You are now registered with username: " + user); // ... Please login
         // if not mongo.find()!! spara isf
         mongo.save(name, user, pass); // borde tas om hand steget innan
     }
