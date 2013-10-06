@@ -37,33 +37,13 @@ exports.friend = function(req,res) {
     res.render("./friend.jade", options);
 };
 exports.register = function(req,res) {
+    console.log("routes.js: rendering register.jade");
     res.render("./register.jade", options);
-
 };
 
 exports.signin = function(req,res) {
+    console.log("routes.js: rendering signin.jade");
     res.render("./signin.jade", options);
-};
-
-exports.validateSignin = function(req,res) {
-/*
-    var email = req.param('email', '');
-    var password = req.param('password', '');
-    console.log(email);
-    console.log(password);
-
-    var userData = {user:"", pass:""};
-    var validData = false;
-
-    if(!validData){
-        //res.render("./signin.jade", options); // skicka med rätt fel, options?
-        //return "invalid data";
-        res.render('hello invalid data', { status: 200, message: 'I am Hello' });
-    } else {
-        //res.render("./dash.jade", options); // skicka med userData, så vi kan logga in
-        //return "valid data";
-    }
-    */
 };
 
 exports.about = function(req,res) {

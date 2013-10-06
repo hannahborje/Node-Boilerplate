@@ -30,14 +30,33 @@ var connect = require('connect')
     , routes = require('./routes/routes')
     , express = require('express')
     , io = require('socket.io')
-    , port = (process.env.PORT || 8082);
-    //, mongo = require('mongodb');
-    //,mongoose = require('express-mongoose');//,
-    //MongooseStore
+    , port = (process.env.PORT || 8082)//;//;
+    , mongoose = require('mongoose')//;//
+    , mongo = require('./db/mongo')//;
+    , cors = require('cors');
 
-//////////////////
-//Setup Express //
-//////////////////
+///////////////////
+// Setup MongoDB //
+///////////////////
+require('express-mongoose');// koppla ihop express med mongoose
+var mdb =  "mongodb://localhost:27017/progclub";
+mongoose.connect(mdb); //, users?
+
+
+var db = mongoose.connection; // mongod (--smallfiles)
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function callback () {
+    // yay!
+    console.log('Connected to DB');
+});
+
+
+// collections: users, ... ??
+
+
+///////////////////
+// Setup Express //
+///////////////////
 var server = express.createServer();
 
 server.configure(function(){
@@ -47,6 +66,7 @@ server.configure(function(){
     server.use(express.cookieParser());
     server.use(express.session({ secret: "shhhhhhhhh!"}));
     server.use(connect.static(__dirname + '/static'));
+    server.use(cors()); // behövs för ajax-anrop
     server.use(server.router);
 });
 
@@ -94,8 +114,49 @@ io.sockets.on('connection', function(socket){
 ///////////////////////////////////////////
 
 // Post requests
-server.post('/signin', routes.signin);
-//server.post('/validateSignin', routes.validateSignin);
+server.post('/authorize', function(req, res){
+    console.log("Authorizing:");
+
+     var user = req.param('email', '');
+     var pass = req.param('password', '');
+     console.log("server.js: catching post request for /authorize, user details:");
+     console.log(user);
+     console.log(pass);
+
+    console.log("server.js: catching post request for /authorize, calling mongo.auth(user, pass)");
+     // se om användaren kan auktoriseras
+     if (mongo.auth(user, pass)){
+         console.log("server.js: mongo.auth() returned true");
+         //res.json("200", 200); //// var jsonString = JSON.stringify(results);
+     }else{
+         console.log("server.js: mongo.auth() returned false");
+         //res.send("server, not authorized", 200);
+     }
+    // /authorize ska inte renderas !!!
+    //res.send("server.js: authorized: " + user + " " + pass, 200); // skickas till signin.jade, ajaxanropet där, ajax.js (CORS)
+    //routes.dash(req, res); med options se mongoose-dokumentation
+});
+server.post('/signin', function(req, res){
+    var name = req.param('name', ''); // tom sträng '' blir defaultvärde om inget hittas
+    var user = req.param('email', '');
+    var pass = req.param('password', '');
+
+    console.log("server.js: catching post request for /signin, user details:");
+    console.log("Hej " + name);
+
+
+    // Detta borde tas om hand tidigare
+    if (mongo.find(name, user)){
+        console.log("There already was a: " + user); // ... Please login
+    }else{
+        console.log("You are now registered with username: " + user); // ... Please login
+        // if not mongo.find()!! spara isf
+        mongo.save(name, user, pass); // borde tas om hand steget innan
+    }
+
+    // Skicka med meddelandena
+    routes.signin(req ,res);
+});
 
 // Get requests
 server.get('/', routes.start);
@@ -107,7 +168,6 @@ server.get('/index', routes.index); // ej vår
 server.get('/register', routes.register);
 server.get('/signin', routes.signin);
 server.get('/start', routes.start);
-
 
 
 //A Route for Creating a 500 Error (Useful to keep around)
