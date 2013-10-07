@@ -20,7 +20,7 @@ $ mongo
 Öppna http://localhost:28017/ ( = portnr + 1000) i webbläsaren för mer info
 */
 
-var mongoose = require('mongoose');//;//
+var mongoose = require('mongoose');
 
 // importera Schema så att vi kan definiera hur våra collections ska se ut
 // Schema-instans = collection
@@ -39,24 +39,25 @@ var userSchema = new Schema({
 var User = mongoose.model('User', userSchema);
 
 
-
-exports.auth = function(username, password){
+exports.auth = function(username, password, callback){
     User.find({user: username, pass: password}, function(err, docs){
         if (err) console.dir("mongo.js .auth() err: " + err);
+
         console.dir("mongo.js .auth() => user: " + username + " pass: " + password);
         console.dir("mongo.js .auth() found: " + docs);
 
         if (docs.length === 0){
             console.log("mongo.js .auth(): docs are empty, no authorization");
-
+            callback(false);
         }
         else{
             console.log("mongo.js .auth():  authorize");
+            callback(true);
         }
     });
 };
 
-exports.find = function(fullname, username){
+exports.find = function(fullname, username, callback){
     User.find({name: fullname, user: username}, function(err, docs){
         if (err) console.dir("mongo.js .find() err: " + err);
         console.dir("mongo.js .find() => fullname: " + fullname + " user: " + username);
@@ -64,12 +65,12 @@ exports.find = function(fullname, username){
 
         if (docs.length === 0){
             console.log("mongo.js .find(): docs are empty, no user occupies that name");
-
+            callback(false);
         }
         else{
             console.log("mongo.js .find(): username is occupied! ");
+            callback(true);
         }
-
     });
 };
 
@@ -79,12 +80,11 @@ exports.save = function(fullname, username, password){
 
     // Each document can be saved to the database by calling its save method.
     // The first argument to the callback will be an error if any occured.
-
     user.save(function (err, doc) {
-        if (err) console.dir("mongo.js .save() err: " + err); // TODO handle the error
+        if (err) console.dir("mongo.js .save() err: " + err);
+
         console.dir("mongo.js .save() => fullname: " + fullname + " user: " + username + " password: " + password);
         console.dir("mongo.js .save() => saved in db: " + doc);
-        //console.log(doc.pass);
     });
 };
 

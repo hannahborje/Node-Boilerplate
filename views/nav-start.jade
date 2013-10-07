@@ -15,12 +15,13 @@
                     li
                         a(href='explore') Utforska
 
-                //form(action="/validateSignin", method="post").navbar-form.pull-right
-                form.navbar-form.pull-right
+                form(action="/authorize", method="post", id="myForm").navbar-form.pull-right
                     input.span2(type='text', placeholder='Email', name="email", required)
                     |
                     input.span2(type='password', placeholder='Lösenord', name="password", required)
                     |
-                    a(href="#").button.btn(type='submit') Logga in
-                // ??? hur göra för att validera?
+                    button.btn(type='submit') Logga in
+
                 a(href='register').button.btn.btn-success(type='submit') Registrera
+                // Felmeddelande
+                .result

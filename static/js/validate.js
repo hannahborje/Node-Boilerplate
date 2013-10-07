@@ -1,5 +1,10 @@
 
-$("#userForm").validate({
+var validate = function() {
+ console.log("validate.js(): anropad");
+
+ var form = $("#userForm");
+
+ form.validate({
     rules: {
         name: {
             required: true,
@@ -34,4 +39,7 @@ $("#userForm").validate({
             required: "Please confirm password"
         }
     }
-});
+ });
+    //console.log("Validate.js(): is form.valid()? " + form.valid());
+    return form.valid();
+};

@@ -7,7 +7,7 @@ block content
     include nav-unlogged-in
 
     .container
-        form(action="/signin", method='post').form-signin#userForm
+        form(action="/try-register", method='post').form-signin#userForm
             h2.form-signin-heading Registrera dig här
             input.input-block-level(type='text',  placeholder='Ditt namn', name="name", id="name", required)
             input.input-block-level(type='text',  placeholder='Email-adress (användarnamn)',
@@ -17,8 +17,13 @@ block content
             input.input-block-level(type='password', placeholder='Bekräfta lösenord',
             name="confirm", id="confirm", required)
             button.btn.btn-large.btn-success(type='submit')#submit Registrera
+            // TODO
+            br
+            .result
 
 block footer
     // Courtesy of jqueryvalidation.org ***
     script(src='http://jquery.bassistance.de/validate/jquery.validate.js')
+    //
     script(src="/js/validate.js")
+    script(src="/js/ajax-register.js")

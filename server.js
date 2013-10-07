@@ -1,3 +1,4 @@
+// TODO: Gör färdigt beskrivning
 /*************************
  *
  * TDP013
@@ -11,12 +12,11 @@
  * För kravspecifikation, se http://www.ida.liu.se/~TDP013/labs/projekt.sv.shtml
  *
  * Appen är skapad som ett Node.js Boilerplate-projekt (v.2) i WebStorm, och använder
- * html-boilerplate, express, connect, jade och Socket.IO
+ * html5, express, connect, jade, mongoose/mongoDB, och socket.IO
  * (Rob Righter: https://github.com/robrighter/node-boilerplate)
  * samt Bootstrap med Jade-templating:
  * (Tim Reynolds: https://github.com/timReynolds/jade-bootstrap-examples)
  *
- * Interaktion sker även med MongoDB
  *
  * Kör $ node server.js för att sätta igång applikationen
  * Öppna 0.0.0.0:8082 i Webbläsaren
@@ -40,18 +40,14 @@ var connect = require('connect')
 ///////////////////
 require('express-mongoose');// koppla ihop express med mongoose
 var mdb =  "mongodb://localhost:27017/progclub";
-mongoose.connect(mdb); //, users?
+mongoose.connect(mdb);
 
 
 var db = mongoose.connection; // mongod (--smallfiles)
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function callback () {
-    // yay!
     console.log('Connected to DB');
 });
-
-
-// collections: users, ... ??
 
 
 ///////////////////
@@ -123,39 +119,38 @@ server.post('/authorize', function(req, res){
     console.log(user);
     console.log(pass);
 
-    console.log("server.js: catching post request for /authorize, calling mongo.auth(user, pass)");
-    // se om användaren kan auktoriseras
-    mongo.auth(user, pass);// callback eller skicka med res{
-
-    //res.json("200", 200); //// var jsonString = JSON.stringify(results);
-
-
-    //res.send("server, not authorized", 200);
-
-    // /authorize ska inte renderas !!!
-    //res.send("server.js: authorized: " + user + " " + pass, 200); // skickas till signin.jade, ajaxanropet där, ajax.js (CORS)
-    res.json({user: user, pass: pass}, 200);
-    //console.log("res.headerSent " +  res.headerSent); // CORS???
-    //routes.dash(req, res); med options se mongoose-dokumentation
+    console.log("server.js: calling mongo.auth(user, pass)");
+    // TODO: se om användaren kan auktoriseras
+    mongo.auth(user, pass, function(authorized){
+        if(authorized){
+            console.log("server.js: Authorized: " + user + ". Calling routes.dash");
+            res.send("Log-in succesful", 200);
+        }else{
+            console.log("server.js: Couldn't authorize: " + user + ". Sending response");
+            res.send("Vi kunde tyvärr inte logga in dig. Prova igen!", 401);
+        }
+    });
 });
-server.post('/signin', function(req, res){
-    var name = req.param('name', ''); // tom sträng '' blir defaultvärde om inget hittas
-    var user = req.param('email', '');
-    var pass = req.param('password', '');
 
-    console.log("server.js: catching post request for /signin, user details:");
-    console.log("Hello " + name);
+server.post('/try-register', function(req, res){
+    var name = req.param('name', ''); // '' blir defaultvärde om inget hittas
+    var user = req.param('user', '');
+    var pass = req.param('pass', '');
 
-    console.log("server.js: -> mongo.find() trying to find user:  " + user); // ... Please login
-    // Detta borde tas om hand tidigare
-    mongo.find(name, user);//){ // callback, skicka med res??
+    console.log("server.js: catching post request for /try-register");
+    console.log("Hello " + user);
+    console.log("server.js: -> mongo.find() trying to find user:  " + user);
 
-    // if not mongo.find()!! spara isf
-    console.log("server.js: -> mongo.save() savinguser:  " + user);
-    mongo.save(name, user, pass); // borde tas om hand steget innan
-
-    // Skicka med meddelandena
-    routes.signin(req ,res);
+    mongo.find(name, user, function(userFound){
+        if (userFound){
+            console.log("server.js: User " + user  + " was taken, try again  ");
+            res.send("Användarnamnet var upptaget. Var vänlig försök igen!", 401); // TODO
+        }else{
+            console.log("server.js: -> mongo.save() saving user:  " + user);
+            mongo.save(name, user, pass);
+            res.send("User: " + user + " saved " + 200);
+        }
+    });
 });
 
 // Get requests

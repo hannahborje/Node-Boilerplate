@@ -3,6 +3,8 @@
  *
  */
 
+
+// TODO - sammanställ
 var options =  { locals: {
     title : 'Your Page Title'
         ,description: 'Your Page Description'
@@ -12,6 +14,7 @@ var options =  { locals: {
 
 
 // Ta ej bort, Innehåller intressant funktionalitet
+// TODO - kolla upp
 exports.index = function(req,res) {
     res.render("oldindex.jade", options);
 };
@@ -23,6 +26,7 @@ exports.start = function(req,res) {
 };
 
 exports.dash = function(req,res) {
+    console.log("router.js: rendering dash.jade")
     options.locals.title = "Din Programmeringsklubb";
     res.render("./dash.jade", options);
 };
