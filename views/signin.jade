@@ -4,23 +4,20 @@ block head
     include sign-form-style
 
 block content
+    //include nav-start
     include nav-unlogged-in
 
     .container
-        //form.form-signin
-        //form(id='myForm', method="POST").form-signin
         form(id='myForm', action='/authorize', method='post').form-signin
             h2.form-signin-heading Logga in
             input.input-block-level(type='text', placeholder='Email-adress', name="email", required)
             input.input-block-level(type='password', placeholder='Lösenord', name="password", required)
-            //a.button.btn.btn-large.btn-primary(type='submit')#submit Logga in
-            //a(href="#").button.btn.btn-large.btn-primary(type='submit')#submit Logga in
+
             button.btn.btn-large.btn-primary Logga in
-            // TODO
+            // TODO: ändra br
             br
             p
                .result
-
 
 block footer
     script(src="/js/ajax-signin.js")

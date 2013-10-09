@@ -4,12 +4,13 @@
  */
 
 
-// TODO - sammanställ
+// TODO - sammanställ parametrar
 var options =  { locals: {
     title : 'Your Page Title'
         ,description: 'Your Page Description'
         ,author: 'Your Name'
         ,analyticssiteid: 'XXXXXXX'
+        ,reqsessionuserid: 'Användarnamn'
 }};
 
 
@@ -20,25 +21,17 @@ exports.index = function(req,res) {
 };
 
 
-/*
-function checkAuth(req, res, next) {
-    if (!req.session.user_id) {
-        res.send('Du har inte tillåtelse att se den här sidan. Tihi. Var god logga in eller registrera dig');
-    } else {
-        next();
-    }
-}
-*/
-
 
 exports.start = function(req,res) {
     options.locals.title = "Programmeringsklubben";
     res.render("./start.jade", options);
 };
 
-exports.dash = function(req,res) {
+exports.dash = function(req,res, friends) {
     console.log("router.js: rendering dash.jade")
-    options.locals.title = "Din Programmeringsklubb";
+    options.locals.title = "Förnamn Efternamn: Programmeringsklubben"; // TODO
+    options.locals.reqsessionuserid = req.session.user_id;
+    options.locals.friends = friends;
     res.render("./dash.jade", options);
 };
 
@@ -48,10 +41,12 @@ exports.explore = function(req,res) {
 };
 
 exports.friend = function(req,res) {
-    options.locals.title = "Förnamn Efternamn: Programmeringsklubben";
+    options.locals.title = "Förnamn Efternamn: Programmeringsklubben"; // TODO: ändra Förnamn efternamn, locals?
+    options.locals.reqsessionuserid = req.session.user_id;
     res.render("./friend.jade", options);
 };
 exports.register = function(req,res) {
+    options.locals.title = "Registrera dig hos Programmeringsklubben";
     console.log("routes.js: rendering register.jade");
     res.render("./register.jade", options);
 };
@@ -62,5 +57,6 @@ exports.signin = function(req,res) {
 };
 
 exports.about = function(req,res) {
+    options.locals.title = "Om Programmeringsklubben";
     res.render("./about.jade", options);
 };

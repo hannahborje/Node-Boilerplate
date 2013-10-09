@@ -21,6 +21,9 @@
  * Kör $ node server.js för att sätta igång applikationen
  * Öppna 0.0.0.0:8082 i Webbläsaren
  *
+ * Starta eventuellt processen
+ * $mongod
+ *
  **********************************************************************/
 
 ///////////////////////
@@ -40,6 +43,7 @@ var connect = require('connect')
 // Setup MongoDB //
 ///////////////////
 var mdb =  "mongodb://localhost:27017/progclub";
+
 mongoose.connect(mdb);
 
 var db = mongoose.connection; // mongod (--smallfiles)
@@ -122,6 +126,7 @@ io.sockets.on('connection', function(socket){
 //              Routes                   //
 ///////////////////////////////////////////
 
+// Auktorisering
 function checkAuth(req, res, next) {
     if (!req.session.user_id) {
         routes.start(req, res);
@@ -156,7 +161,6 @@ server.post('/authorize', function(req, res){
     });
 });
 
-server.post('/dash', checkAuth, routes.dash);
 
 server.post('/edit', checkAuth, function(req, res){
     {
@@ -165,14 +169,13 @@ server.post('/edit', checkAuth, function(req, res){
     }
     console.log("server.js/POST edit, got: value: ", value + ", key: " + key + ", username: " + req.session.user_id);
 
-    // TODO: Username!!
-    mongo.edit(req.session.user_id, key, value, function(result){
-        console.log(result);
-        res.send("Lyckades med insättning?", 200);
+    mongo.edit(req.session.user_id, key, value, function(){
+        console.log("server.js, /edit: Redigerat bio");
+        res.send("Redigerat: " + key, 200);
     });
 });
 
-server.post('/friend',checkAuth, routes.friend);
+//server.post('/friend',checkAuth, routes.friend);
 
 server.post('/try-register', function(req, res){
     var name = req.param('name', ''); // '' blir defaultvärde om inget hittas
@@ -195,6 +198,7 @@ server.post('/try-register', function(req, res){
     });
 });
 
+
 // GET requests //
 server.get('/', routes.start);
 
@@ -205,11 +209,22 @@ server.get('/500', function(req, res){
 
 
 server.get('/about', routes.about);
-server.get('/dash', checkAuth, routes.dash); // Hämta användarens info från databasen
+server.get('/dash', checkAuth, function(req, res){
+
+    // var friends = mongo.getUserFriends(req.session.user_id)
+    var friends = [{username: "hanbo@hanbo.se", firstname: "Hannah", surname: "Börjesson"}]; // TODO: ej hårdkodat
+
+    routes.dash(req, res,friends);
+}); // Hämta användarens info från databasen
 
 server.get('/explore', routes.explore);
-server.get('/friend',checkAuth, routes.friend);
-//server.get('/index', routes.index); // ej vår
+
+// parsa req.param
+server.get('/friend',checkAuth, routes.friend); // TODO: TA EMOT GET-PARMETRAR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+
+//server.get('/index', routes.index); // ej vår // TODO: kolla..
 
 server.get('/logout', function (req, res) {
     delete req.session.user_id; // if existing?
@@ -220,6 +235,11 @@ server.get('/register', routes.register);
 server.get('/signin', routes.signin);
 server.get('/start', routes.start);
 
+server.get('/update',checkAuth, function(req, res){
+    mongo.update(req.session.user_id, function(doc){
+        res.json(doc, 200);
+    });
+});
 
 //A Route for Creating a 500 Error (Useful to keep around)
 server.get('/500', function(req, res){

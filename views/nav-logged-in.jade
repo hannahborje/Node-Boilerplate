@@ -50,6 +50,6 @@
                                   a.btn.btn-small(href="#") Läs
                 p.navbar-text.pull-right
                     | Inloggad som:
-                    a.navbar-link(href='#') Användarnamn
+                    a#nav-username.navbar-link(href='#') #{reqsessionuserid}
                     &nbsp;
                     a.btn-success.btn-small(href="/logout") Logga ut

@@ -48,8 +48,8 @@ var userBio = new Schema({
     company: String,
     education: String,
     about : String,
-    knowledge : Array,
-    cv: Array
+    knowledge : String,
+    cv: String
 });
 
 // Konvertera/kompilera till en Model (document som ska sättas in i collection)
@@ -120,26 +120,21 @@ exports.save = function(fullname, username, password){
 
 exports.edit = function(username, key, value, callback) {
 
-    console.log("mongo.js: edit() #1");
-
     var query = {username: username};
-    var update = {"#{key}": value};
+    var update = {};
+    update[key] = value;
 
-    console.log("mongo.js: edit() #1.5");
-
-    /*var userbio = UserBio({username: username, firstname: "Förnamn", surname: "Efternamn", city: "Din stad", age: "Ålder",
-        occupation: "Yrke", company:"Företag", education:"Utbildning", about: "Om dig", knowledge:"Kunskaper", cv:"CV" });*/
-
-    UserBio.findOneAndUpdate(query, update, function(doc){
-        //if (err) console.log(err);
-        console.log("mongo.js, edit(): findOneAndUpdate: " + doc);
-
+    UserBio.update(query, {$set: update}, {}, function(){
+        console.log("mongo.js: edit(): UserBio.update: " + key + ", " + value);
     });
 
-    console.log("mongo.js: edit() #2");
+    callback();
 
-    callback("TJena ");
+};
 
-    console.log("mongo.js: edit() #3");
-
-}
+exports.update = function(username, callback){
+    UserBio.findOne({username:username}, function(err, doc){
+        if (err) console.log("mongo.js: update(): UserBio.find(): username:" + username );
+        callback(doc);
+    });
+};

@@ -5,6 +5,7 @@ block head
 
 block content
     include nav-unlogged-in
+    //include nav-start
 
     .container
         form(action="/try-register", method='post').form-signin#userForm
@@ -28,3 +29,4 @@ block footer
     //
     script(src="/js/validate.js")
     script(src="/js/ajax-register.js")
+    // ajax-signin

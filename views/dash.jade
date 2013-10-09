@@ -36,10 +36,11 @@ block content
                        | Rubrik
                      thead
                         h2
-                            a#name(href='#', data-type='text', data-url='/edit', data-title='Förnamn')
-                                | #{"Förnamn"}
-                            a#surname(href='#', data-type='text', data-url='/edit', data-title='Efternamn')
-                                | #{"Efternamn"}
+                            a#name(href='#')
+                                | Förnamn
+                            &nbsp;
+                            a#surname(href='#')
+                                | Efternamn #{""}
                      tr
                          td
 
@@ -56,21 +57,20 @@ block content
 
                          td
                              p
-                                 a#city(href='#', data-type='text', data-url='/edit', data-title='Välj ort',
-                                 data-id="", value="staden")
-                                     | Redigera #{""}
+                                 a#city(href='#')
+                                     | Redigera
                                  br
-                                 a#age(href='#', data-type='text', data-url='/edit', data-title='Ange ålder')
-                                     | Redigera #{""}
+                                 a#age(href='#')
+                                     | Redigera
                                  br
-                                 a#occupation(href='#', data-type='text', data-url='/edit', data-title='Ditt yrke')
-                                     | Redigera #{""}
+                                 a#occupation(href='#')
+                                     | Redigera
                                  br
-                                 a#company(href='#', data-type='text', data-url='/edit', data-title='Var jobbar du')
-                                     | Redigera #{""}
+                                 a#company(href='#')
+                                     | Redigera
                                  br
-                                 a#education(href='#', data-type='text', data-url='/edit', data-title='Utbildning')
-                                     | Redigera #{""}
+                                 a#education(href='#')
+                                     | Redigera
                .columnB.pull-right
                  ul.thumbnails
                    li.span10
@@ -85,18 +85,18 @@ block content
                h3
                  | Om mig
                p.lead
-                 a#aboutme(href='#', data-type='textarea', data-url='/edit')
-                   | Redigera #{""}
+                 a#aboutme(href='#')
+                   | Redigera
                h3
                  | Kunskaper
                p.lead
-                  a#knowledge(href='#', data-type='textarea', data-url='/edit')
-                    | Redigera #{""}
+                  a#knowledge(href='#')
+                    | Redigera
                h3
                  | CV
                p.lead
-                   a#cv(href='#', data-type='textarea', data-url='/edit')
-                    | Redigera #{""}
+                   a#cv(href='#')
+                    | Redigera
 
          .span2
 
@@ -108,12 +108,12 @@ block content
                     .accordion-body.collapse.in#collapseOne
                         .accordion-inner
                             ul.nav
-                              - var lengd = 4
-                              - for (var i=1; i<lengd; i++)
+                              //- var lengd = 4
+                              - for (var i in friends)
                                   li
                                    .well.well-small
                                      .row-fluid
-                                       a(href="#") #{"Förnamn"} #{"Efternamn"} #{i}
+                                       a(href="/friend?username=#{friends[i].username}") #{friends[i].firstname} #{friends[i].surname} #{i}
                                        .dropdown
                                            a.btn.btn-small.dropdown-toggle(data-toggle='dropdown', href='#')
                                               i.icon-trash
@@ -122,7 +122,7 @@ block content
                                               h6 #{"Förnamn Efternamn"}?
                                               .row-fluid
                                                 a.btn.btn-small(href="#") Ja
-                                                a.btn.btn-small(href="#") Ja
+                                                a.btn.btn-small(href="#") Nej
                                            a.btn.btn-small(href="#")
                                               i.icon-user
                               // end for
@@ -134,7 +134,7 @@ block footer
     script(src="/js/bootstrap.file-input.js")
     script
         $(document).ready(function(){
+           // För att ladda upp en bild
            $('input[type=file]').bootstrapFileInput();
            //$('.file-inputs').bootstrapFileInput();
         });
-    script(src="/js/ajax-dash.js") // TODO: gör färdigt
