@@ -31,14 +31,14 @@ var connect = require('connect')
     , express = require('express')
     , io = require('socket.io')
     , port = (process.env.PORT || 8082)//;//;
-    , mongoose = require('mongoose')//;//
+    , mongoose = require('mongoose')
+    , MongoStore  = require('connect-mongo')(express)
     , mongo = require('./db/mongo')//;
     , cors = require('cors');
 
 ///////////////////
 // Setup MongoDB //
 ///////////////////
-require('express-mongoose');// koppla ihop express med mongoose
 var mdb =  "mongodb://localhost:27017/progclub";
 mongoose.connect(mdb);
 
@@ -49,6 +49,7 @@ db.once('open', function callback () {
     console.log('Connected to DB');
 });
 
+// var Session = mongoose.model('Session'),
 
 ///////////////////
 // Setup Express //
@@ -60,7 +61,20 @@ server.configure(function(){
     server.set('view options', { layout: false });
     server.use(connect.bodyParser());
     server.use(express.cookieParser());
-    server.use(express.session({ secret: "shhhhhhhhh!"}));
+    server.use(express.session({
+        secret: "tdp013",
+        cookie: {
+            maxAge: new Date(Date.now() + 3600000) //60000 // 31557600000
+        },
+        store: new MongoStore({
+            url: mdb //'mongodb://myuser:mypass@localhost:27017/mydb'
+            //key:"express.sid"
+            //db: 'progclub'
+            //collection: 'sessions' // optional: default: sessions
+            // password: 'xxx' // optional
+            // username: 'admin', // optional
+        })
+    }));
     server.use(connect.static(__dirname + '/static'));
     server.use(cors()); // behövs för ajax-anrop
     server.use(server.router);
@@ -157,6 +171,16 @@ server.post('/try-register', function(req, res){
 server.get('/', routes.start);
 server.get('/about', routes.about);
 server.get('/dash', routes.dash);
+
+/*
+
+ Session.find({}, function (err, sessions) {
+ if (err) console.log(err);
+ res.send(sessions);
+ });
+ */
+
+
 server.get('/explore', routes.explore);
 server.get('/friend', routes.friend);
 server.get('/index', routes.index); // ej vår

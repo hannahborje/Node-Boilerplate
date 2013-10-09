@@ -5,6 +5,7 @@
   "version": "0.0.1",
   "dependencies": {
     "connect": "1.8.5",
+    "connect-mongo": "0.3.3",
     "express": "2.5.2",
     "jade": "0.20.0",
     "mongoose": "2.4.8",

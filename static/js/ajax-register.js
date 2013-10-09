@@ -33,8 +33,8 @@ $(document).ready(function() {
             // TODO: flusha
             $( ".result" ).html(
                 "<div class='alert alert-success'><button type='button' class='close' data-dismiss='alert'>&times;</button><strong>Grattis!</strong> Registreringen lyckades! Du förs nu till inloggningssidan din jävel. <div id='data'></div>"
-            ).fadeIn( 1000 ).delay( 5000 );
-            window.location = "/signin"; // Skicka till signin
+            ).delay( 50000 );
+            window.location = "/signin"; // Redirect till signin
         });
 
         posting.fail(function(){

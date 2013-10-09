@@ -10,6 +10,9 @@ $ sudo chmod 0755 /data/db  alt. $ sudo chown $USER /data/db
 Starta tjänsten (innan $ node main.js):
 $mongod
 
+Ont om utrymme? =>
+$mongod --smallfiles
+
 För att använda databasen i shell-läge
 $ mongo
 > use progclub

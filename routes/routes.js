@@ -29,6 +29,15 @@ exports.dash = function(req,res) {
     console.log("router.js: rendering dash.jade")
     options.locals.title = "Din Programmeringsklubb";
     res.render("./dash.jade", options);
+
+    /*
+
+     Session.find({}, function (err, sessions) {
+     if (err) console.log(err);
+     res.send(sessions);
+     });
+
+     */
 };
 
 exports.explore = function(req,res) {
