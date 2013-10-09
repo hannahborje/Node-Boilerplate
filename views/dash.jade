@@ -36,9 +36,9 @@ block content
                        | Rubrik
                      thead
                         h2
-                            a#name(href='#', data-type='text', data-pk='1', data-url='/post', data-title='Förnamn')
+                            a#name(href='#', data-type='text', data-url='/edit', data-title='Förnamn')
                                 | #{"Förnamn"}
-                            a#surname(href='#', data-type='text', data-pk='1', data-url='/post', data-title='Efternamn')
+                            a#surname(href='#', data-type='text', data-url='/edit', data-title='Efternamn')
                                 | #{"Efternamn"}
                      tr
                          td
@@ -56,20 +56,20 @@ block content
 
                          td
                              p
-                                 a#city(href='#', data-type='text', data-pk='1', data-url='/post', data-title='Välj ort',
+                                 a#city(href='#', data-type='text', data-url='/edit', data-title='Välj ort',
                                  data-id="", value="staden")
                                      | Redigera #{""}
                                  br
-                                 a#age(href='#', data-type='text', data-pk='1', data-url='/post', data-title='Ange ålder')
+                                 a#age(href='#', data-type='text', data-url='/edit', data-title='Ange ålder')
                                      | Redigera #{""}
                                  br
-                                 a#occupation(href='#', data-type='text', data-pk='1', data-url='/post', data-title='Ditt yrke')
+                                 a#occupation(href='#', data-type='text', data-url='/edit', data-title='Ditt yrke')
                                      | Redigera #{""}
                                  br
-                                 a#company(href='#', data-type='text', data-pk='1', data-url='/post', data-title='Var jobbar du')
+                                 a#company(href='#', data-type='text', data-url='/edit', data-title='Var jobbar du')
                                      | Redigera #{""}
                                  br
-                                 a#education(href='#', data-type='text', data-pk='1', data-url='/post', data-title='Utbildning')
+                                 a#education(href='#', data-type='text', data-url='/edit', data-title='Utbildning')
                                      | Redigera #{""}
                .columnB.pull-right
                  ul.thumbnails
@@ -85,17 +85,17 @@ block content
                h3
                  | Om mig
                p.lead
-                 a#aboutme(href='#', data-type='textarea', data-pk='1', data-url='/post')
+                 a#aboutme(href='#', data-type='textarea', data-url='/edit')
                    | Redigera #{""}
                h3
                  | Kunskaper
                p.lead
-                  a#knowledge(href='#', data-type='textarea', data-pk='1', data-url='/post')
+                  a#knowledge(href='#', data-type='textarea', data-url='/edit')
                     | Redigera #{""}
                h3
                  | CV
                p.lead
-                   a#cv(href='#', data-type='textarea', data-pk='1', data-url='/post')
+                   a#cv(href='#', data-type='textarea', data-url='/edit')
                     | Redigera #{""}
 
          .span2
@@ -137,3 +137,4 @@ block footer
            $('input[type=file]').bootstrapFileInput();
            //$('.file-inputs').bootstrapFileInput();
         });
+    script(src="/js/ajax-dash.js") // TODO: gör färdigt

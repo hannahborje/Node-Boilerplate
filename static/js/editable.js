@@ -7,7 +7,15 @@ $(document).ready(function() {
     $.fn.editable.defaults.mode = 'inline';
 
     //make username editable
-    $('#name').editable();
+    $('#name').editable({
+        pk: 'name',
+        success: function(data){
+            console.log("editable.js: Det här gick ju bra:" + data.msg)
+        },
+        error: function(err){
+            console.log("Det här blev fel: " + err.status);
+    }
+    });
     $('#surname').editable();
     $('#city').editable();
     $('#occupation').editable();

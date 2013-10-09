@@ -37,10 +37,25 @@ var userSchema = new Schema({
     pass: String
 });
 
+// Definiera hur en användare ska auktoriseras
+var userBio = new Schema({
+    username: String,
+    firstname: String,
+    surname: String,
+    city: String,
+    age: String,
+    occupation: String,
+    company: String,
+    education: String,
+    about : String,
+    knowledge : Array,
+    cv: Array
+});
+
 // Konvertera/kompilera till en Model (document som ska sättas in i collection)
 // Model-instans = document
 var User = mongoose.model('User', userSchema);
-
+var UserBio = mongoose.model('UserBio', userBio);
 
 exports.auth = function(username, password, callback){
     User.find({user: username, pass: password}, function(err, docs){
@@ -81,14 +96,50 @@ exports.save = function(fullname, username, password){
     // Skapa en användare att sätta in i vår collection
     var user = new User({name: fullname, user: username, pass: password });
 
+    //parsa fullname, lägg in i bio
+    var userbio = new UserBio({username: username, firstname: "Förnamn", surname: "Efternamn", city: "Din stad", age: "Ålder",
+        occupation: "Yrke", company:"Företag", education:"Utbildning", about: "Om dig", knowledge:"Kunskaper", cv:"CV" });
+
     // Each document can be saved to the database by calling its save method.
     // The first argument to the callback will be an error if any occured.
     user.save(function (err, doc) {
+        if (err) console.dir("mongo.js .save(user) err: " + err);
+
+        console.dir("mongo.js .save(user) => fullname: " + fullname + " user: " + username + " password: " + password);
+        console.dir("mongo.js .save(user) => saved in db: " + doc);
+    });
+
+    userbio.save(function (err, doc) {
         if (err) console.dir("mongo.js .save() err: " + err);
 
-        console.dir("mongo.js .save() => fullname: " + fullname + " user: " + username + " password: " + password);
-        console.dir("mongo.js .save() => saved in db: " + doc);
+        console.dir("mongo.js .save(bio) => fullname: " + fullname + " user: " + username + " password: " + password);
+        console.dir("mongo.js .save(bio) => saved in db: " + doc);
     });
 };
 
 
+exports.edit = function(username, key, value, callback) {
+
+    console.log("mongo.js: edit() #1");
+
+    var query = {username: username};
+    var update = {"#{key}": value};
+
+    console.log("mongo.js: edit() #1.5");
+
+    /*var userbio = UserBio({username: username, firstname: "Förnamn", surname: "Efternamn", city: "Din stad", age: "Ålder",
+        occupation: "Yrke", company:"Företag", education:"Utbildning", about: "Om dig", knowledge:"Kunskaper", cv:"CV" });*/
+
+    UserBio.findOneAndUpdate(query, update, function(doc){
+        //if (err) console.log(err);
+        console.log("mongo.js, edit(): findOneAndUpdate: " + doc);
+
+    });
+
+    console.log("mongo.js: edit() #2");
+
+    callback("TJena ");
+
+    console.log("mongo.js: edit() #3");
+
+}

@@ -42,14 +42,13 @@ var connect = require('connect')
 var mdb =  "mongodb://localhost:27017/progclub";
 mongoose.connect(mdb);
 
-
 var db = mongoose.connection; // mongod (--smallfiles)
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function callback () {
     console.log('Connected to DB');
 });
 
-// var Session = mongoose.model('Session'),
+//var Session = mongoose.model('Session'); // kan instansiera sessionobjekt
 
 ///////////////////
 // Setup Express //
@@ -123,6 +122,14 @@ io.sockets.on('connection', function(socket){
 //              Routes                   //
 ///////////////////////////////////////////
 
+function checkAuth(req, res, next) {
+    if (!req.session.user_id) {
+        routes.start(req, res);
+    } else {
+        next();
+    }
+}
+
 // Post requests
 server.post('/authorize', function(req, res){
     console.log("Authorizing:");
@@ -137,6 +144,9 @@ server.post('/authorize', function(req, res){
     // TODO: se om användaren kan auktoriseras
     mongo.auth(user, pass, function(authorized){
         if(authorized){
+            req.session.user_id = user;
+            console.log("server.js: Logging in as: " + req.session.user_id + ", " + pass);
+
             console.log("server.js: Authorized: " + user + ". Calling routes.dash");
             res.send("Log-in succesful", 200);
         }else{
@@ -145,6 +155,24 @@ server.post('/authorize', function(req, res){
         }
     });
 });
+
+server.post('/dash', checkAuth, routes.dash);
+
+server.post('/edit', checkAuth, function(req, res){
+    {
+        var value = req.param('value', '');
+        var key = req.param('pk', '');
+    }
+    console.log("server.js/POST edit, got: value: ", value + ", key: " + key + ", username: " + req.session.user_id);
+
+    // TODO: Username!!
+    mongo.edit(req.session.user_id, key, value, function(result){
+        console.log(result);
+        res.send("Lyckades med insättning?", 200);
+    });
+});
+
+server.post('/friend',checkAuth, routes.friend);
 
 server.post('/try-register', function(req, res){
     var name = req.param('name', ''); // '' blir defaultvärde om inget hittas
@@ -167,23 +195,27 @@ server.post('/try-register', function(req, res){
     });
 });
 
-// Get requests
+// GET requests //
 server.get('/', routes.start);
+
+// OBS! För testning enbart
+server.get('/500', function(req, res){
+    throw new Error('This is a 500 Error');
+});
+
+
 server.get('/about', routes.about);
-server.get('/dash', routes.dash);
-
-/*
-
- Session.find({}, function (err, sessions) {
- if (err) console.log(err);
- res.send(sessions);
- });
- */
-
+server.get('/dash', checkAuth, routes.dash); // Hämta användarens info från databasen
 
 server.get('/explore', routes.explore);
-server.get('/friend', routes.friend);
-server.get('/index', routes.index); // ej vår
+server.get('/friend',checkAuth, routes.friend);
+//server.get('/index', routes.index); // ej vår
+
+server.get('/logout', function (req, res) {
+    delete req.session.user_id; // if existing?
+    res.redirect('/');
+});
+
 server.get('/register', routes.register);
 server.get('/signin', routes.signin);
 server.get('/start', routes.start);
