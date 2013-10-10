@@ -175,7 +175,12 @@ server.post('/edit', checkAuth, function(req, res){
     });
 });
 
-//server.post('/friend',checkAuth, routes.friend);
+server.post('/getUsers', checkAuth, function(req, res){
+    mongo.findAll(function(result){
+            console.log("server.js, /getUsers");
+        res.json(result, 200);
+    });
+});
 
 server.post('/try-register', function(req, res){
     var name = req.param('name', ''); // '' blir defaultvärde om inget hittas
@@ -191,7 +196,7 @@ server.post('/try-register', function(req, res){
             console.log("server.js: User " + user  + " was taken, try again  ");
             res.send("Användarnamnet var upptaget. Var vänlig försök igen!", 401); // TODO
         }else{
-            console.log("server.js: -> mongo.save() saving user:  " + user);
+            console.log("server.js: -> mongo.save() saving user:  " + user + ", with name: " + name);
             mongo.save(name, user, pass);
             res.send("User: " + user + " saved " + 200);
         }

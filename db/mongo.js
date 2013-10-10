@@ -49,7 +49,8 @@ var userBio = new Schema({
     education: String,
     about : String,
     knowledge : String,
-    cv: String
+    cv: String,
+    friends: Array
 });
 
 // Konvertera/kompilera till en Model (document som ska sättas in i collection)
@@ -92,12 +93,46 @@ exports.find = function(fullname, username, callback){
     });
 };
 
+exports.findAll = function(callback){
+    UserBio.find({}, function(err, docs){
+        if (err) console.dir("mongo.js .findAll() err: " + err);
+        console.dir("mongo.js .findAll()");
+
+        if (docs.length === 0){
+            console.log("mongo.js .findAll(): docs are empty");
+            callback([{}]);
+        }
+        else{
+            console.log("mongo.js .findAll(): We found something ");
+            callback(docs);
+        }
+    });
+};
+
 exports.save = function(fullname, username, password){
     // Skapa en användare att sätta in i vår collection
     var user = new User({name: fullname, user: username, pass: password });
 
     //parsa fullname, lägg in i bio
-    var userbio = new UserBio({username: username, firstname: "Förnamn", surname: "Efternamn", city: "Din stad", age: "Ålder",
+    var parse_names = /(^.*)\s(.*)/;
+    var match = parse_names.exec(fullname);
+
+    var firstname = "", surname = "";
+    if (match) // isEmpty
+        {
+        if (match.length > 1){
+            firstname = match[1];
+            if (match.length > 2){
+                surname = match[2];
+            }
+        } else {
+            firstname = fullname;
+        }
+    }else {
+        firstname = fullname;
+    }
+
+    var userbio = new UserBio({username: username, firstname: firstname, surname: surname, city: "Din stad", age: "Ålder",
         occupation: "Yrke", company:"Företag", education:"Utbildning", about: "Om dig", knowledge:"Kunskaper", cv:"CV" });
 
     // Each document can be saved to the database by calling its save method.

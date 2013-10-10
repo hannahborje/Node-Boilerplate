@@ -24,7 +24,7 @@ $(document).ready(function() {
         // Send the data using post
         //var posting = $.post( url, { s: term } );
         console.log("ajax-register.js: posting to url: " + url);
-        var posting =  $.post( url, {user : user, pass: pass });
+        var posting =  $.post( url, {name: name, user : user, pass: pass });
 
         // Put the results in a div
         posting.done(function( data, textStatus ) {

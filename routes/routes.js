@@ -52,6 +52,7 @@ exports.register = function(req,res) {
 };
 
 exports.signin = function(req,res) {
+    options.locals.title = "Logga in hos Programmeringsklubben";
     console.log("routes.js: rendering signin.jade");
     res.render("./signin.jade", options);
 };

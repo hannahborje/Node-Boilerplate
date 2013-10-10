@@ -14,8 +14,9 @@
                         a(href='about') Om
                 ul.nav
                     li
-                        form.navbar-form.pull-right
-                            input.span2(type='text', placeholder='Sök')
+                        form#userSearch.navbar-form.pull-right
+                            input.span2(type='text', placeholder='Sök efter användare', data-provide="typeahead",
+                            name="search", id = "search", autocomplete="off").typeahead
                             button.btn(type='submit')
                               i.icon-search
                 ul.nav
