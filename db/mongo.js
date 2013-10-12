@@ -117,6 +117,7 @@ exports.save = function(fullname, username, password){
     var parse_names = /(^.*)\s(.*)/;
     var match = parse_names.exec(fullname);
 
+    // Parsa förnamn, efternamn
     var firstname = "", surname = "";
     if (match) // isEmpty
         {
@@ -133,7 +134,8 @@ exports.save = function(fullname, username, password){
     }
 
     var userbio = new UserBio({username: username, firstname: firstname, surname: surname, city: "Din stad", age: "Ålder",
-        occupation: "Yrke", company:"Företag", education:"Utbildning", about: "Om dig", knowledge:"Kunskaper", cv:"CV" });
+        occupation: "Yrke", company:"Företag", education:"Utbildning", about: "Om dig", knowledge:"Kunskaper", cv:"CV",
+    friends: [] });
 
     // Each document can be saved to the database by calling its save method.
     // The first argument to the callback will be an error if any occured.

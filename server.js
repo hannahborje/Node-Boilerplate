@@ -126,6 +126,8 @@ io.sockets.on('connection', function(socket){
 //              Routes                   //
 ///////////////////////////////////////////
 
+var allUsers = [{}]; // Plats för att spara alla användare i, vid sökning
+
 // Auktorisering
 function checkAuth(req, res, next) {
     if (!req.session.user_id) {
@@ -175,13 +177,6 @@ server.post('/edit', checkAuth, function(req, res){
     });
 });
 
-server.post('/getUsers', checkAuth, function(req, res){
-    mongo.findAll(function(result){
-            console.log("server.js, /getUsers");
-        res.json(result, 200);
-    });
-});
-
 server.post('/try-register', function(req, res){
     var name = req.param('name', ''); // '' blir defaultvärde om inget hittas
     var user = req.param('user', '');
@@ -214,22 +209,37 @@ server.get('/500', function(req, res){
 
 
 server.get('/about', routes.about);
-server.get('/dash', checkAuth, function(req, res){
 
+
+server.get('/dash', checkAuth, function(req, res){
+    mongo.findAll(function(result){
+        console.log("server.js, /getUsers");
+        allUsers = result;
+    });
+
+    // TODO: ej hårdkodad friendslista
     // var friends = mongo.getUserFriends(req.session.user_id)
-    var friends = [{username: "hanbo@hanbo.se", firstname: "Hannah", surname: "Börjesson"}]; // TODO: ej hårdkodat
+    var friends = [{username: "hanbo@hanbo.se", firstname: "Hannah", surname: "Börjesson"}];
 
     routes.dash(req, res,friends);
 }); // Hämta användarens info från databasen
 
 server.get('/explore', routes.explore);
 
+server.get('/getUsers', checkAuth, function(req, res){
+        console.log("server.js, /getUsers");
+        res.json(allUsers, 200);
+});
+
+// TODO: TA EMOT GET-PARMETRAR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // parsa req.param
-server.get('/friend',checkAuth, routes.friend); // TODO: TA EMOT GET-PARMETRAR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+server.get('/friend',checkAuth, routes.friend);
 
 
 
 //server.get('/index', routes.index); // ej vår // TODO: kolla..
+
+
 
 server.get('/logout', function (req, res) {
     delete req.session.user_id; // if existing?

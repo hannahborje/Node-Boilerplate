@@ -3,7 +3,7 @@ $(document).ready(function(){
 
     console.log("ajax-search.jade: kör jQuery-script");
 
-    // gör en post-request till databasen
+    // gör en request till databasen?
     var userSource = [""];
     var userDB = [{}];
     var userLinks = {};
@@ -11,12 +11,12 @@ $(document).ready(function(){
 
     $('.typeahead').typeahead({
         source: function(){
-            console.log("ajax-search.js: posting to url: getUsers");
-            var posting =  $.post("/getUsers");
+            console.log("ajax-search.js: getting url: getUsers");
+            var getting =  $.get("/getUsers");
 
             // Put the results in a div
-            posting.done(function( data, textStatus ) {
-                console.dir("ajax-search.js: posting done(success)" );
+            getting.done(function( data, textStatus ) {
+                console.dir("ajax-search.js: getting done(success)" );
                 console.log("ajax-search.js: textStatus = " + textStatus);
 
                 userDB = data;
@@ -26,12 +26,12 @@ $(document).ready(function(){
                 }
                 return userSource;
             });
-            posting.fail(function(){
+            getting.fail(function(){
                 console.log("ajax-search.js: posting fail/error");
             });
             return userSource;
         },
-        minLength: 2
+        minLength: 2 // när typeahead ska aktiveras
     }
     );
 
@@ -52,24 +52,17 @@ $(document).ready(function(){
         for (var u in userSource){
             if (name === userSource[u]){
                 // get friend + user ID
-                console.log("ajax-search.js, userLinks[name]: " + userLinks[name]);
+                console.log("ajax-search.js, looking for userLinks[name]: " + userLinks[name]);
                 url += userLinks[name];
                 window.location = url;
+                break;
             }
-            else{
-                //TODO: felmeddelande
-                console.log("ajax.search.js, could not find user");
+            //else
+            {
+                //TODO: felmeddelande !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! skapa div
+                console.log("ajax.search.js, could not find user"); // please use the suggestions
             }
         }
-
-        console.log("ajax-search.js: searching for: " + name);
-        // url += "=" + friendid
-
-        console.log("ajax-register.js: getting friend: " + url);
-
-        window.location = url; // Redirect till signin
-
-
     }); // .submit
 
 });
