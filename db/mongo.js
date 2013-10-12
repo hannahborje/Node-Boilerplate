@@ -135,7 +135,7 @@ exports.save = function(fullname, username, password){
 
     var userbio = new UserBio({username: username, firstname: firstname, surname: surname, city: "Din stad", age: "Ålder",
         occupation: "Yrke", company:"Företag", education:"Utbildning", about: "Om dig", knowledge:"Kunskaper", cv:"CV",
-    friends: [] });
+    friends: []});
 
     // Each document can be saved to the database by calling its save method.
     // The first argument to the callback will be an error if any occured.

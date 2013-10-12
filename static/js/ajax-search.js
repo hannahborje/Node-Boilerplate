@@ -43,7 +43,7 @@ $(document).ready(function(){
         // Stop form from submitting normally
         event.preventDefault();
 
-
+        // 
         // Get some values from elements on the page:
         var $form = $( this ),
             name = $form.find("input[name='search']").val(),
