@@ -12,8 +12,8 @@ $(document).ready(function() {
              console.log("Fick json tillbaka: " + json);
              editables = json;
 
-             $('#name').text(editables["firstname"]);
-             $('#surname').text(editables["surname"]);
+             $('#firstname').text(editables["firstname"]);
+             $('#lastname').text(editables["lastname"]);
              $('#city').text(editables["city"]);
              $('#age').text(editables["age"]);
              $('#occupation').text(editables["occupation"]);
@@ -35,7 +35,7 @@ $(document).ready(function() {
     $.fn.editable.defaults.mode = 'inline';
 
     // pk = key i databasen som ska ändras
-    $('#name').editable({
+    $('#firstname').editable({
         type: 'text',
         url: '/edit',
         title: 'Förnamn',
@@ -48,11 +48,11 @@ $(document).ready(function() {
             console.log("editable.js, fel: " + err.status);
     }
     });
-    $('#surname').editable({
+    $('#lastname').editable({
         type: 'text',
         url: '/edit',
         title: 'Efternamn',
-        pk: 'surname',
+        pk: 'lastname',
         success: function(data){
             console.log("editable.js: Det här gick ju bra:" + data.msg)
         },
@@ -64,9 +64,9 @@ $(document).ready(function() {
     $('#city').editable({
         type: 'text',
         url: '/edit',
-        title: 'Stad-ish',
-        name: 'yubbi',
-        value: 'ish',
+        title: 'Ort',
+        name: 'Ort',
+        value: 'Ort',
         pk: 'city',
         success: function(data){
             console.log("editable.js: Det här gick ju bra:" + data.msg)

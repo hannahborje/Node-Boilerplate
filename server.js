@@ -173,12 +173,13 @@ server.post('/edit', checkAuth, function(req, res){
 
     mongo.edit(req.session.user_id, key, value, function(){
         console.log("server.js, /edit: Redigerat bio");
-        res.send("Redigerat: " + key, 200);
+        res.send("Redigerat: " + key);
     });
 });
 
 server.post('/try-register', function(req, res){
-    var name = req.param('name', ''); // '' blir defaultvärde om inget hittas
+    var firstname = req.param('firstname', ''); // '' blir defaultvärde om inget hittas
+    var lastname = req.param('lastname', '');
     var user = req.param('user', '');
     var pass = req.param('pass', '');
 
@@ -186,13 +187,13 @@ server.post('/try-register', function(req, res){
     console.log("Hello " + user);
     console.log("server.js: -> mongo.find() trying to find user:  " + user);
 
-    mongo.find(name, user, function(userFound){
+    mongo.find(/*firstname,lastname,*/ user, function(userFound){
         if (userFound){
             console.log("server.js: User " + user  + " was taken, try again  ");
             res.send("Användarnamnet var upptaget. Var vänlig försök igen!", 401); // TODO
         }else{
-            console.log("server.js: -> mongo.save() saving user:  " + user + ", with name: " + name);
-            mongo.save(name, user, pass);
+            console.log("server.js: -> mongo.save() saving user:  " + user + ", with name: " + firstname + lastname);
+            mongo.save(firstname, lastname, user, pass);
             res.send("User: " + user + " saved " + 200);
         }
     });

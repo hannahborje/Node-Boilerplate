@@ -10,8 +10,10 @@ block content
     .container
         form(action="/try-register", method='post').form-signin#userForm
             h2.form-signin-heading Registrera dig här
-            input.input-block-level(type='text', placeholder='Förnamn och efternamn',
-            name="name", id="name", required)
+            input.input-block-level(type='text', placeholder='Förnamn',
+            name="firstname", id="firstname", required)
+            input.input-block-level(type='text', placeholder='Efternamn',
+            name="lastname", id="lastname", required)
             input.input-block-level(type='text', placeholder='Email-adress (användarnamn)',
             name="email", id="email", required)
             input.input-block-level(type='password', placeholder='Välj ett lösenord',

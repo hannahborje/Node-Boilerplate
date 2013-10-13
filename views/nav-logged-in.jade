@@ -14,7 +14,12 @@
                         a(href='about') Om
                 ul.nav
                     li
+
                         form#userSearch.navbar-form.pull-right
+
+                          a(href='#', id="searchtip", data-placement="bottom", data-toggle='tooltip',
+                          title='Välj ett av förslagen som dyker upp när du skriver in text (klicka på det), tryck sedan på förstoringsglaset. Får du inte upp några förslag finns inte användaren.')
+
                             input.span2(type='text', placeholder='Sök efter användare', data-provide="typeahead",
                             name="search", id = "search", autocomplete="off").typeahead
                             button.btn(type='submit')
@@ -30,7 +35,7 @@
                           ul.dropdown-menu(role='menu', aria-labelledby='dLabel')
                             p Du har #{2} nya förfrågningar:
                             hr
-                            // For
+                            // TODO:
                             h6 #{"Förnamn Efternamn"}?
                             .row-fluid
                                 a.btn.btn-small(href="#") Ja

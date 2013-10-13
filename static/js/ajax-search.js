@@ -3,35 +3,54 @@ $(document).ready(function(){
 
     console.log("ajax-search.jade: kör jQuery-script");
 
-    // gör en request till databasen?
-    var userSource = [""];
-    var userDB = [{}];
-    var userLinks = {};
 
+    var userDB = [{}];
+    var selectedUser = "";
+    var userMap = {};
+
+    // gör en request till servern, hämta alla användardata
+    console.log("ajax-search.js: getting url: getUsers");
+    var getting =  $.get("/getUsers");
+    getting.done(function( data, textStatus ) {
+        console.dir("ajax-search.js: getting done(success)" );
+        console.log("ajax-search.js: textStatus = " + textStatus);
+
+        // data innehåller info om alla användare i databasen
+        userDB = data;
+        console.log("ajax-search.js: userDB[0][username] = " + userDB[0]["username"]);
+    });
+    getting.fail(function(){
+        console.log("ajax-search.js: posting fail/error (getUsers)");
+    });
+
+    // Aktivera söktips
+    $('#searchtip').tooltip('hide');
 
     $('.typeahead').typeahead({
-        source: function(){
-            console.log("ajax-search.js: getting url: getUsers");
-            var getting =  $.get("/getUsers");
+        // parametern source matar typeahead med sökdata
+        source: function(query, process){
+            console.log("ajax-search.js, .typeahead(): userDB[0][username] = " + userDB[0]["username"]);
+            var userStrings = [];
 
-            // Put the results in a div
-            getting.done(function( data, textStatus ) {
-                console.dir("ajax-search.js: getting done(success)" );
-                console.log("ajax-search.js: textStatus = " + textStatus);
+            // För varje post/användare i databasen,
+            // mappa användarnamn med all info om användaren
+            // och lägg till söksträng knutet till förnamn+efternamn
+            $.each(userDB, function(i, user){
+               var fullname = user.firstname + " " + user.lastname;
+               userMap[fullname] = user.username;
+               userStrings.push(fullname)
+            });
 
-                userDB = data;
-                for (var user in data){
-                    userSource[user] = data[user]["firstname"] + " " + data[user]["surname"];
-                    userLinks[userSource[user]] = data[user]["username"];
-                }
-                return userSource;
-            });
-            getting.fail(function(){
-                console.log("ajax-search.js: posting fail/error");
-            });
-            return userSource;
+            // Kör typeahead på användardata
+            process(userStrings);
         },
-        minLength: 2 // när typeahead ska aktiveras
+        // updater fångar vad användaren valt i sökrutan
+        // Knyter valet till rätt användarnamn i databasen
+        updater: function(item) {
+            selectedUser = userMap[item];
+            return item;
+        },
+        minLength: 1 // när typeahead ska aktiveras, antal bokstäver
     }
     );
 
@@ -43,25 +62,24 @@ $(document).ready(function(){
         // Stop form from submitting normally
         event.preventDefault();
 
-        // 
+        //
         // Get some values from elements on the page:
         var $form = $( this ),
-            name = $form.find("input[name='search']").val(),
+            soughtName = $form.find("input[name='search']").val(),
             url = "/friend?user=";
 
-        for (var u in userSource){
-            if (name === userSource[u]){
-                // get friend + user ID
-                console.log("ajax-search.js, looking for userLinks[name]: " + userLinks[name]);
-                url += userLinks[name];
-                window.location = url;
-                break;
-            }
-            //else
-            {
-                //TODO: felmeddelande !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! skapa div
-                console.log("ajax.search.js, could not find user"); // please use the suggestions
-            }
+        // Har användaren valt ett av alternativen i sökrutan? Ananrs funkar det inte
+        if (userMap[soughtName] != undefined){
+            // get friend + user ID
+            console.log("ajax-search.js, looking for userMap[soughtName]: " + userMap[soughtName]);
+            url += userMap[soughtName];
+            window.location = url;
+        }
+        else
+        {
+            console.log("ajax.search.js, could not find user");
+            // Aktivera söktips
+            $('#searchtip').tooltip('show');
         }
     }); // .submit
 

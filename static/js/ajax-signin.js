@@ -4,8 +4,6 @@ $(document).ready(function() {
 
     //myForm.submit(function() {
     $('#myForm').submit(function(event){
-        // Ta bort boxen med information varje gång
-        $( ".result" ).html( "" );
 
         // Stop form from submitting normally
         event.preventDefault();
@@ -28,10 +26,14 @@ $(document).ready(function() {
 
         posting.fail(function(){
             console.log("ajax-signin.js: posting fail/error");
-            // TODO: flusha
-            $( ".result" ).html(
-                "<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>&times;</button><strong>Hoppsan!</strong> Vi kunde fan inte logga in dig. Testa igen.<div id='data'></div>"
-            );
+
+            // Aktivera logintips
+            $('#signin-error').tooltip('show');
         });
     });
+
+    $(".navbar").mouseenter(function(){
+        $('#signin-error').tooltip('hide');
+    });
+
 });

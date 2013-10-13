@@ -36,10 +36,10 @@ block content
                        | Rubrik
                      thead
                         h2
-                            a#name(href='#')
+                            a#firstname(href='#')
                                 | Förnamn
                             &nbsp;
-                            a#surname(href='#')
+                            a#lastname(href='#')
                                 | Efternamn #{""}
                      tr
                          td
@@ -108,7 +108,6 @@ block content
                     .accordion-body.collapse.in#collapseOne
                         .accordion-inner
                             ul.nav
-                              //- var lengd = 4
                               - for (var i in friends)
                                   li
                                    .well.well-small

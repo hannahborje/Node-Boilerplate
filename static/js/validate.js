@@ -1,12 +1,13 @@
 
 var validate = function() {
- console.log("validate.js(): anropad");
-
  var form = $("#userForm");
-
  form.validate({
     rules: {
-        name: {
+        firstname: {
+            required: true,
+            minlength: 2
+        },
+        lastname: {
             required: true,
             minlength: 2
         },
@@ -25,21 +26,23 @@ var validate = function() {
         }
     },
     messages: {
-        name: {
-            required: "Please specify your name"
+        firstname: {
+            required: "Var vänlig uppge ditt förnnamn"
+        },
+        lastname: {
+            required: "Var vänlig uppge ditt efternnamn"
         },
         email: {
-            required: "We need your email address to contact you",
-            email: "Your email address must be in the format of name@domain.com"
+            required: "Din e-postadress behövs som ditt användarnamn",
+            email: "Din e-postadress måste skrivas i formatet name@domain.com"
         },
         password: {
-            required: "Please enter password"
+            required: "Var god ange ett lösenord"
         },
         confirm: {
-            required: "Please confirm password"
+            required: "Var god bekräfta lösenordet"
         }
     }
  });
-    //console.log("Validate.js(): is form.valid()? " + form.valid());
     return form.valid();
 };

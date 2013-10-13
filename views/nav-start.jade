@@ -18,10 +18,11 @@
                 form(action="/authorize", method="post", id="myForm").navbar-form.pull-right
                     input.span2(type='text', placeholder='Email', name="email", required)
                     |
+                    // Felmeddelande
+                    a(href='#', id="signin-error", data-placement="bottom", data-toggle='tooltip',
+                    title='Vi kunde tyvärr inte logga in dig. Prova igen.')
                     input.span2(type='password', placeholder='Lösenord', name="password", required)
                     |
                     button.btn(type='submit') Logga in
 
                 a(href='register').button.btn.btn-success(type='submit') Registrera
-                // Felmeddelande
-                .result
