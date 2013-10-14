@@ -59,6 +59,27 @@ var userBio = new Schema({
 var User = mongoose.model('User', userSchema);
 var UserBio = mongoose.model('UserBio', userBio);
 
+exports.addFriend = function(username, friend, callback) {
+
+    var query = {username: username};
+
+    // hitta min friend-array, spara innehållet
+    UserBio.findOne(query, function(err, doc){
+        if (err){
+            console.log("mongo.js: addFriend(): UserBio.find(): username:" + username );
+            // TODO: if err or not err do so and so (callback)
+            callback();
+        } else {
+            console.log("mongo.js: addFriend(): UserBio.findOne: doc.friends: " + doc.friends);
+            doc.friends.push(friend);
+            doc.save();
+
+            // TODO: if err or not err do so and so (callback)
+            callback();
+        }
+    });
+};
+
 exports.auth = function(username, password, callback){
     User.find({username: username, pass: password}, function(err, docs){
         if (err) console.dir("mongo.js .auth() err: " + err);
@@ -111,6 +132,30 @@ exports.findAll = function(callback){
     });
 };
 
+// Den här funktionen anropas när dashboard reloadas och man vill skicka ny information om alla användare
+exports.isFriend = function(username, friend, callback){
+    // Gå in i vår "profil" i databasen
+    UserBio.findOne({username:username}, function(err, doc){
+        if (err) {
+            console.log("mongo.js: err:" + err.msg );
+            callback(false);
+        }
+        // Leta om efterfrågad vän finns där
+        else {
+            for (var f in doc.friends) {
+                if (doc.friends[f] === friend) {
+                    console.log("mongo.js: isFriend(): UserBio.find(): friend found:" + friend );
+                    callback(true);
+                    return;
+                }
+            }
+            // Ingen vän
+            console.log("mongo.js: isFriend(): UserBio.find(): friend not found");
+            callback(false);
+        }
+    });
+};
+
 exports.save = function(firstname,lastname, username, password){
     // Skapa en användare att sätta in i vår collection
     var user = new User({firstname: firstname, lastname: lastname, username: username, pass: password });
@@ -143,23 +188,24 @@ exports.edit = function(username, key, value, callback) {
     var update = {};
     update[key] = value;
 
+
     UserBio.update(query, {$set: update}, {}, function(err, numAffected){
         console.log("mongo.js: edit(): UserBio.update: " + key + ": " + value);
         console.log("err:" + err);
         console.log("numAffected: " + numAffected);
         // if numaffected do so and so (callback)
+
+        // Ändra i user-databasen om det är förnamn och efternamn
+        if (key === "firstname" || key === "lastname"){
+            User.update(query, {$set: update}, {}, function(err, numAffected){
+                console.log("mongo.js: edit(): User.update: " + key + ": " + value + " update[key].value: " + update[key]);
+                console.log("err:" + err);
+                console.log("numAffected: " + numAffected);
+            });
+        }
+        // TODO: Felhantering
+        callback();
     });
-
-    // Ändra i user-databasen om det är förnamn och efternamn
-    if (key === "firstname" || key === "lastname"){
-        User.update(query, {$set: update}, {}, function(err, numAffected){
-            console.log("mongo.js: edit(): User.update: " + key + ": " + value + " update[key].value: " + update[key]);
-            console.log("err:" + err);
-            console.log("numAffected: " + numAffected);
-        });
-    }
-
-    callback();
 };
 
 // Den här funktionen anropas när dashboard reloadas och man vill skicka ny information om alla användare

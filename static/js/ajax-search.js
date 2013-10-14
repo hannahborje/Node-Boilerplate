@@ -17,7 +17,6 @@ $(document).ready(function(){
 
         // data innehåller info om alla användare i databasen
         userDB = data;
-        console.log("ajax-search.js: userDB[0][username] = " + userDB[0]["username"]);
     });
     getting.fail(function(){
         console.log("ajax-search.js: posting fail/error (getUsers)");

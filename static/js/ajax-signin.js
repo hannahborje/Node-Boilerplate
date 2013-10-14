@@ -32,7 +32,7 @@ $(document).ready(function() {
         });
     });
 
-    $(".navbar").mouseenter(function(){
+    $(".signin-tip").mouseenter(function(){
         $('#signin-error').tooltip('hide');
     });
 

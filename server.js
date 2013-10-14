@@ -138,6 +138,17 @@ function checkAuth(req, res, next) {
 }
 
 // Post requests
+server.post('/addFriend', function(req, res){
+    console.log("server.js, Adding friend");
+    var friendUsername = req.param('username', '');
+    var username = req.session.user_id;
+
+    mongo.addFriend(username, friendUsername, function(){
+        // TODO: Allting gick bra, eller?
+        res.json(200);
+    })
+});
+
 server.post('/authorize', function(req, res){
     console.log("Authorizing:");
 
@@ -148,7 +159,7 @@ server.post('/authorize', function(req, res){
     console.log(pass);
 
     console.log("server.js: calling mongo.auth(user, pass)");
-    // TODO: se om användaren kan auktoriseras
+
     mongo.auth(user, pass, function(authorized){
         if(authorized){
             req.session.user_id = user;
@@ -187,10 +198,10 @@ server.post('/try-register', function(req, res){
     console.log("Hello " + user);
     console.log("server.js: -> mongo.find() trying to find user:  " + user);
 
-    mongo.find(/*firstname,lastname,*/ user, function(userFound){
+    mongo.find(user, function(userFound){
         if (userFound){
             console.log("server.js: User " + user  + " was taken, try again  ");
-            res.send("Användarnamnet var upptaget. Var vänlig försök igen!", 401); // TODO
+            res.send("Användarnamnet var upptaget. Var vänlig försök igen!", 401);
         }else{
             console.log("server.js: -> mongo.save() saving user:  " + user + ", with name: " + firstname + lastname);
             mongo.save(firstname, lastname, user, pass);
@@ -218,11 +229,11 @@ server.get('/dash', checkAuth, function(req, res){
         allUsers = result;
     });
 
-    // TODO: ej hårdkodad friendslista
+    // TODO: ej hårdkodad friendslista !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     // var friends = mongo.getUserFriends(req.session.user_id)
     var friends = [{username: "hanbo@hanbo.se", firstname: "Hannah", surname: "Börjesson"}];
 
-    routes.dash(req, res,friends);
+    routes.dash(req, res,friends); // TODO: ny friends
 }); // Hämta användarens info från databasen
 
 server.get('/explore', routes.explore);
@@ -232,9 +243,37 @@ server.get('/getUsers', checkAuth, function(req, res){
         res.json(allUsers, 200);
 });
 
-// TODO: TA EMOT GET-PARMETRAR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// parsa req.param
-server.get('/friend',checkAuth, routes.friend);
+// TODO: TA EMOT GET-PARAMETRAR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// parsa req.param, url.parse?
+server.get('/friend',checkAuth, function(req, res) {
+    var friend =  req.query.user;
+    console.log("server.js: /friend: get query: " + friend);
+
+    // Är requesten korrekt skriven? Isf finns användarnamnet i URL:en
+    if (friend != undefined){
+        // Hämta data om vännen
+        mongo.update(friend, function(friendDoc){
+            console.log("Detta är användaren vi browsar: " + friendDoc["firstname"]);
+
+            // Är detta en vän?
+            mongo.isFriend(req.session.user_id, friend, function(is_Friend){
+                if (is_Friend){
+                    console.log("server.js, /friend: " + friend + "is a friend");
+                    // Ändra text på knappen i jade-filen
+                    routes.friend(req, res, friendDoc, is_Friend);
+                } else {
+                    console.log("server.js, /friend: " + friend + "is not a friend");
+                    routes.friend(req, res, friendDoc, is_Friend);
+                }
+            });
+        });
+    }
+    // Skicka tillbaka om ofullständig URL
+    else {
+        routes.start(req, res); // automatisk redirect till dash om man är inloggad?
+    }
+
+});
 
 
 
@@ -251,11 +290,19 @@ server.get('/register', routes.register);
 server.get('/signin', routes.signin);
 server.get('/start', routes.start);
 
+// Hämtar data om inloggad användare
 server.get('/update',checkAuth, function(req, res){
     mongo.update(req.session.user_id, function(doc){
         res.json(doc, 200);
     });
 });
+
+server.get('/updateFriend',checkAuth, function(req, res){
+    mongo.update(req.query.username, function(doc){
+        res.json(doc, 200);
+    });
+});
+
 
 //A Route for Creating a 500 Error (Useful to keep around)
 server.get('/500', function(req, res){

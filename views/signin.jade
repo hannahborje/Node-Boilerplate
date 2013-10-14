@@ -16,8 +16,10 @@ block content
             button.btn.btn-large.btn-primary Logga in
             // TODO: ändra br
             br
-            p
-               .result
+            p.signin-tip
+                // Felmeddelande
+                a(href='#', id="signin-error", data-placement="bottom", data-toggle='tooltip',
+                title='Vi kunde tyvärr inte logga in dig. Prova igen.')
 
 block footer
     script(src="/js/ajax-signin.js")

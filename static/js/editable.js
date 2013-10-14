@@ -22,9 +22,6 @@ $(document).ready(function() {
              $('#aboutme').text(editables["about"]);
              $('#knowledge').text(editables["knowledge"]);
              $('#cv').text(editables["cv"]);
-             //$('#nav-username').text(editables["username"]); // navbar
-
-
          },
          error:function(req,data,err) {
              console.log(err);

@@ -23,8 +23,7 @@ block content
                        | Rubrik
                      thead
                         h2
-                                | #{"Förnamn"}
-                                | #{"Efternamn"}
+                                #fullname
                      tr
                          td
 
@@ -40,16 +39,11 @@ block content
                                  | UTBILDNING
 
                          td
-                             p
-                                | Redigera #{""}
-                                br
-                                | Redigera #{""}
-                                br
-                                | Redigera #{""}
-                                br
-                                | Redigera #{""}
-                                br
-                                | Redigera #{""}
+                                #city
+                                #age
+                                #occupation
+                                #company
+                                #education
                .columnB.pull-right
                  ul.thumbnails
                    li.span10
@@ -58,32 +52,39 @@ block content
                        .caption
                             p
                                 .dropdown
-                                    a.btn.btn-small.dropdown-toggle(data-toggle='dropdown', href='#')
-                                        | Lägg till en vän
-                                    ul.dropdown-menu(role='menu', aria-labelledby='dLabel')
-                                        p Vill du skicka vänförfrågan?
-                                        .row-fluid
-                                            a.btn.btn-small(href="#") Ja
-                                            a.btn.btn-small(href="#") Ja
+                                    a.btn.btn-small.dropdown-toggle(data-toggle='dropdown', href='#') #{friendtext}
+                                      if (!isMe && !isFriend)
+                                        ul.dropdown-menu(role='menu', aria-labelledby='dLabel')
+                                            p Vill du skicka vänförfrågan?
+                                            .row-fluid
+                                                a#friend-request.btn.btn-small(href="#") Ja
+                                                a.btn.btn-small(href="#") Nej
                                 .dropdown
+                                  if (!isMe && isFriend)
                                     a.btn.btn-small(href='#sendMsg', data-toggle='modal')
                                         | Skriv meddelande
                             include popupmsg
+                 br
+                 .result
+
            .row-fluid
              .span4
                h3
                  | Om mig
                p.lead
-                   | Redigera #{""}
+                   #aboutme
                h3
                  | Kunskaper
                p.lead
-                    | Redigera #{""}
+                    #knowledge
                h3
                  | CV
                p.lead
-                    | Redigera #{""}
+                    #cv
 
          .span2
+
 block footer
+    div.username(style='visibility: hidden;') #{username}
     script(src="/js/ajax-search.js")
+    script(src="/js/ajax-friend.js")
