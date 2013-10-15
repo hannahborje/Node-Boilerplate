@@ -80,6 +80,23 @@ exports.addFriend = function(username, friend, callback) {
     });
 };
 
+exports.removeFriend = function(username, friend, callback){
+
+    var query = {username: username};
+
+    UserBio.findOne(query, function(err, doc){
+       if(err){
+           console.log("mongo.js: removeFriend(): UserBio.find(): username:" + username );
+           callback();
+       } else {
+           console.log("mongo.js: removeFriend(): UserBio.findOne: doc.friends: " + doc.friends);
+           callback();
+       }
+
+    });
+
+}
+
 exports.auth = function(username, password, callback){
     User.find({username: username, pass: password}, function(err, docs){
         if (err) console.dir("mongo.js .auth() err: " + err);
