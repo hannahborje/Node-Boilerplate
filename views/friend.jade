@@ -46,23 +46,26 @@ block content
                                 #education
                .columnB.pull-right
                  ul.thumbnails
-                   li.span10
-                     .thumbnail
+                   li.span12
+                       //.thumbnail
                        img.img-polaroid(src='/img/empty-pic.png')
                        .caption
-                            p
+                           // TODO: Lös inline
+                           .btn-group
                                 .dropdown
-                                    a.btn.btn-small.dropdown-toggle(data-toggle='dropdown', href='#') #{friendtext}
+                                    a.btn.btn-small.dropdown-toggle(data-toggle='dropdown', href='#')
+                                        | #{friendtext}
                                       if (!isMe && !isFriend)
                                         ul.dropdown-menu(role='menu', aria-labelledby='dLabel')
-                                            p Vill du skicka vänförfrågan?
-                                            .row-fluid
+                                            h6 Vill du skicka vänförfrågan?
+                                            .btn-group.inline
                                                 a#friend-request.btn.btn-small(href="#") Ja
+                                                |
                                                 a.btn.btn-small(href="#") Nej
                                 .dropdown
                                   if (!isMe && isFriend)
                                     a.btn.btn-small(href='#sendMsg', data-toggle='modal')
-                                        | Skriv meddelande
+                                        | Skriv ett meddelande
                             include popupmsg
                  br
                  .result

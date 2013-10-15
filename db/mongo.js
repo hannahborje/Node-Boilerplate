@@ -98,10 +98,12 @@ exports.auth = function(username, password, callback){
     });
 };
 
-exports.find = function(/*firstname, lastname,*/ username, callback){
+exports.find = function(username, callback){
     console.log("mongo.js.find() was called");
-    User.find({username: username}, function(err, docs){
+
+    User.find({username: username}, function(err, docs) {
         if (err) console.dir("mongo.js .find() err: " + err);
+
         console.dir("mongo.js .find() => user: " + username);
         console.dir("mongo.js .find() resulted in: " + docs);
 
@@ -130,6 +132,44 @@ exports.findAll = function(callback){
             callback(docs);
         }
     });
+};
+/*
+exports.getFriends = function(username, callback) {
+
+    var query = {username: username};
+    var friendsArray = [{}];
+
+    // hitta min friend-array, spara innehållet
+    UserBio.findOne(query, function(err, doc){
+        if (err){
+            console.log("mongo.js: getFriends(): UserBio.find(): username:" + username );
+            // TODO: if err or not err do so and so (callback)
+            callback([{}]);
+        } else {
+            console.log("mongo.js: getFriends(): UserBio.findOne: doc.friends: " + doc["friends"] + " " + doc.friends.length);
+            var friendList = doc.friends;
+
+            for (var f=0; f< friendList.length; f++) {
+                console.log("mongo.js, getFriends(), friendList[f]: " + friendList[f]);
+
+                UserBio.findOne({username: friendList[f]}, function(err, bio){
+                    if (err) console.log("mongo.js: getFriends(): UserBio.findOne(): username:" + username );
+
+                    console.log("mongo.js: getFriends(), bio: " + bio.firstname)
+                    friendsArray.push({username: username, fullname: (bio.firstname + " " + bio.lastname) } );
+                    console.log("mongo.js: getFriends(), friendsArray before: " + friendsArray);
+                });
+
+            // TODO: if err or not err do so and so (callback)
+            console.log("mongo.js: getFriends(), friendsArray after: " + friendsArray);
+            callback(friendsArray);
+
+        }
+    });
+};
+*/
+exports.getFullname = function(username, callback){
+
 };
 
 // Den här funktionen anropas när dashboard reloadas och man vill skicka ny information om alla användare
@@ -212,9 +252,12 @@ exports.edit = function(username, key, value, callback) {
 exports.update = function(username, callback){
     UserBio.findOne({username:username}, function(err, doc){
         if (err) console.log("mongo.js: update(): UserBio.find(): username:" + username );
+
         callback(doc);
     });
 };
+
+
 
 // TODO: Byt lösenord
 // TODO: Inbox

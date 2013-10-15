@@ -224,16 +224,55 @@ server.get('/about', routes.about);
 
 
 server.get('/dash', checkAuth, function(req, res){
+
+    var friends = {};
+    var me = req.session.user_id;
+
+    // Hämta information om användare
     mongo.findAll(function(result){
         console.log("server.js, /getUsers");
+
+        // Spara undan
         allUsers = result;
+
+        // Loopa igenom alla användare
+        for (var f in allUsers){
+            // AKtuellt användarnamn
+            var user = allUsers[f].username;
+            console.log("user: " + user);
+
+            // Om användaren är jag
+            if (user == me){
+                console.log("Found me " + me);
+                // Gå igenom alla mina vänner
+                for (var e = 0; e < allUsers[f].friends.length; e++) {
+                    // Lägg till i en vänlista
+                    friends[allUsers[f].friends[e]] = "";
+                }
+            }
+        }
+        // Loopa igenom alla användare IGEN
+        for (var f in allUsers){
+            // Om användaren är en vän
+            var user = allUsers[f].username;
+
+            if (friends[user] === "")
+            {
+                console.log("friends[user]: " + friends[user]);
+                //friends[user] = (allUsers[f].firstname + " "  + allUsers[f].lastname);
+                friends[user] = [(allUsers[f].firstname + " "  + allUsers[f].lastname),
+                user];
+            }
+        }
+
+        for (var f in friends){
+            console.log(" f " + friends[f]);
+        }
+        routes.dash(req, res, friends);
     });
 
-    // TODO: ej hårdkodad friendslista !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    // var friends = mongo.getUserFriends(req.session.user_id)
-    var friends = [{username: "hanbo@hanbo.se", firstname: "Hannah", surname: "Börjesson"}];
 
-    routes.dash(req, res,friends); // TODO: ny friends
+
 }); // Hämta användarens info från databasen
 
 server.get('/explore', routes.explore);
@@ -243,9 +282,10 @@ server.get('/getUsers', checkAuth, function(req, res){
         res.json(allUsers, 200);
 });
 
-// TODO: TA EMOT GET-PARAMETRAR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 // parsa req.param, url.parse?
 server.get('/friend',checkAuth, function(req, res) {
+    // Vem är den sökta vännen
     var friend =  req.query.user;
     console.log("server.js: /friend: get query: " + friend);
 
@@ -253,6 +293,7 @@ server.get('/friend',checkAuth, function(req, res) {
     if (friend != undefined){
         // Hämta data om vännen
         mongo.update(friend, function(friendDoc){
+            console.log("Detta är vännen vi browsar: " + friend);
             console.log("Detta är användaren vi browsar: " + friendDoc["firstname"]);
 
             // Är detta en vän?
@@ -303,6 +344,9 @@ server.get('/updateFriend',checkAuth, function(req, res){
     });
 });
 
+server.get('/removeFriend', checkAuth, function(req,res){
+    res.send("Japp");
+});
 
 //A Route for Creating a 500 Error (Useful to keep around)
 server.get('/500', function(req, res){

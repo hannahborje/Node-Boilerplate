@@ -74,7 +74,7 @@ block content
                .columnB.pull-right
                  ul.thumbnails
                    li.span10
-                     .thumbnail
+                       //.thumbnail
                        img.img-polaroid(src='/img/empty-pic.png')
                        .caption
                             p
@@ -112,19 +112,21 @@ block content
                                   li
                                    .well.well-small
                                      .row-fluid
-                                       a(href="/friend?username=#{friends[i].username}") #{friends[i].firstname} #{friends[i].surname} #{i}
+                                       a(href="/friend?user=#{friends[i][1]}") #{friends[i][0]}
                                        .dropdown
                                            a.btn.btn-small.dropdown-toggle(data-toggle='dropdown', href='#')
                                               i.icon-trash
                                            ul.dropdown-menu(role='menu', aria-labelledby='dLabel')
                                               p Vill du ta bort
-                                              h6 #{"Förnamn Efternamn"}?
+                                              h6 #{friends[i][0]} ?
                                               .row-fluid
-                                                a.btn.btn-small(href="#") Ja
+                                                a#remove-friend.btn.btn-small(href="/removeFriend") Ja
                                                 a.btn.btn-small(href="#") Nej
-                                           a.btn.btn-small(href="#")
+                                           a.btn.btn-small(href="/friend?user=#{friends[i][1]}")
                                               i.icon-user
                               // end for
+         .result
+            br
 
 
 
@@ -132,6 +134,7 @@ block footer
     script(src="/js/editable.js")
     script(src="/js/bootstrap.file-input.js")
     script(src="/js/ajax-search.js")
+    script(src="/js/ajax-dash.js")
     script
         $(document).ready(function(){
            // För att ladda upp en bild
