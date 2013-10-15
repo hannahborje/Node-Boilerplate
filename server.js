@@ -188,6 +188,10 @@ server.post('/edit', checkAuth, function(req, res){
     });
 });
 
+server.post('/removeFriend', checkAuth, function(req,res){
+    res.send("Japp");
+});
+
 server.post('/try-register', function(req, res){
     var firstname = req.param('firstname', ''); // '' blir defaultvärde om inget hittas
     var lastname = req.param('lastname', '');
@@ -342,10 +346,6 @@ server.get('/updateFriend',checkAuth, function(req, res){
     mongo.update(req.query.username, function(doc){
         res.json(doc, 200);
     });
-});
-
-server.get('/removeFriend', checkAuth, function(req,res){
-    res.send("Japp");
 });
 
 //A Route for Creating a 500 Error (Useful to keep around)

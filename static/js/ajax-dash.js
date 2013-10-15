@@ -1,5 +1,9 @@
 $(document).ready(function() {
-    $('#remove-friend').click(function(){
+    $('#remove-friend').click(function(event){
+        console.log("ajax-dash: remove clicked");
+
+        event.preventDefault();
+
         // Send the data using post
         var posting = $.post( "/removeFriend", {username : "TODO" });
 
