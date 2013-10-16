@@ -1,8 +1,3 @@
-/*
- *
- *
- */
-
 
 // TODO - sammanställ parametrar
 var options =  { locals: {

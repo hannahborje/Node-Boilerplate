@@ -99,13 +99,12 @@ block content
                     | Redigera
 
          .span2
-
             .accordion#accordion
                 .accordion-group
                     .accordion-heading
                         a.accordion-toggle(href="#collapseOne", data-toggle="collapse", data-parent="#accordion2")
                             | Dina vänner >>
-                    .accordion-body.collapse.in#collapseOne
+                      .accordion-body.collapse.in#collapseOne
                         .accordion-inner
                             ul.nav
                               - for (var i in friends)
@@ -120,18 +119,25 @@ block content
                                               p Vill du ta bort
                                               h6 #{friends[i][0]} ?
                                               .row-fluid
-                                                a#remove-friend.btn.btn-small(href="/removeFriend") Ja
+                                                a.remove-friend.btn.btn-small(href="removeFriend",
+                                                name="#{friends[i][1]}", method="POST") Ja
                                                 a.btn.btn-small(href="#") Nej
                                            a.btn.btn-small(href="/friend?user=#{friends[i][1]}")
                                               i.icon-user
-                              // end for
+                               // end for
+                            ul.nav
+                                  li
+                                    br
+                                  li
+                                    br
+                                  li
             .result
             br
 
 
 
 block footer
-    script(src="/js/editable.js")
+    script(src="/js/dash-editable.js")
     script(src="/js/bootstrap.file-input.js")
     script(src="/js/ajax-search.js")
     script(src="/js/ajax-dash.js")

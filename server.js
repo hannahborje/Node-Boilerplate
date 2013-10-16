@@ -189,8 +189,38 @@ server.post('/edit', checkAuth, function(req, res){
 });
 
 server.post('/removeFriend', checkAuth, function(req,res){
-    res.send("Japp");
+    // parsa req-parameter
+    console.log("server.js, /removeFriend, req.param.username:");
+    var friendName = req.param('username', '');
+    console.log(friendName);
+
+    // Ta bort ur databasen, ur egna vänner
+    mongo.removeFriend(req.session.user_id, friendName, function(isRemoved){
+        if (!isRemoved){
+            console.log("server.js, /removeFriend, mongo.removeFriend(): error" );
+        }else {
+            console.log("server.js, /removeFriend, mongo.removeFriend(): success" );
+        }
+    });
+
+    res.send(200);
 });
+
+server.post('/sendMsg', checkAuth, function(req,res){
+    var msg = req.param('message', '');
+    var from = req.session.user_id;
+    var to = req.param('receiver', '');
+
+    console.log("server.js, /sendMsg:  msg, from, to: " + msg+from+to);
+
+    mongo.sendMsg(msg, from, to, function() {
+        //
+
+        res.send(200);
+
+    });
+});
+
 
 server.post('/try-register', function(req, res){
     var firstname = req.param('firstname', ''); // '' blir defaultvärde om inget hittas
@@ -206,7 +236,7 @@ server.post('/try-register', function(req, res){
         if (userFound){
             console.log("server.js: User " + user  + " was taken, try again  ");
             res.send("Användarnamnet var upptaget. Var vänlig försök igen!", 401);
-        }else{
+        } else {
             console.log("server.js: -> mongo.save() saving user:  " + user + ", with name: " + firstname + lastname);
             mongo.save(firstname, lastname, user, pass);
             res.send("User: " + user + " saved " + 200);
@@ -243,11 +273,10 @@ server.get('/dash', checkAuth, function(req, res){
         for (var f in allUsers){
             // AKtuellt användarnamn
             var user = allUsers[f].username;
-            console.log("user: " + user);
 
+            // TODO: indexOf()?????????????????????????????????
             // Om användaren är jag
             if (user == me){
-                console.log("Found me " + me);
                 // Gå igenom alla mina vänner
                 for (var e = 0; e < allUsers[f].friends.length; e++) {
                     // Lägg till i en vänlista
@@ -261,16 +290,7 @@ server.get('/dash', checkAuth, function(req, res){
             var user = allUsers[f].username;
 
             if (friends[user] === "")
-            {
-                console.log("friends[user]: " + friends[user]);
-                //friends[user] = (allUsers[f].firstname + " "  + allUsers[f].lastname);
-                friends[user] = [(allUsers[f].firstname + " "  + allUsers[f].lastname),
-                user];
-            }
-        }
-
-        for (var f in friends){
-            console.log(" f " + friends[f]);
+            { friends[user] = [(allUsers[f].firstname + " "  + allUsers[f].lastname), user];}
         }
         routes.dash(req, res, friends);
     });
@@ -312,18 +332,9 @@ server.get('/friend',checkAuth, function(req, res) {
                 }
             });
         });
-    }
     // Skicka tillbaka om ofullständig URL
-    else {
-        routes.start(req, res); // automatisk redirect till dash om man är inloggad?
-    }
-
+    } else { routes.start(req, res); } // automatisk redirect till dash om man är inloggad?
 });
-
-
-
-//server.get('/index', routes.index); // ej vår // TODO: kolla..
-
 
 
 server.get('/logout', function (req, res) {

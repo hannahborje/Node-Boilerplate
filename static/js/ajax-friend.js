@@ -41,6 +41,13 @@ $(document).ready(function() {
             $( ".result" ).html(
                 "<div class='alert alert-success'><button type='button' class='close' data-dismiss='alert'>&times;</button><strong></strong> Vänförfrågan skickad!<div id='data'></div>"
             ).delay(2500).fadeTo( "slow" , 1.0, function() { $(this).children().remove(); });
+
+            /*
+            // TODO: ladda om rätt del med rätt info ditt mongo-CP
+            console.log(document.URL);
+            console.log(window.location);
+            $('.thumbnails').load("/friend?user=jojje@j.com .thumbnails");
+            */
         });
 
         posting.fail(function(){
