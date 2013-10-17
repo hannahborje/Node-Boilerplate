@@ -14,7 +14,6 @@
                         a(href='about') Om
                 ul.nav
                     li
-
                         form#userSearch.navbar-form.pull-right
 
                           a(href='#', id="searchtip", data-placement="bottom", data-toggle='tooltip',
@@ -28,33 +27,12 @@
                     li
                         |
                     li
-                      .dropdown
-                          button.btn.dropdown-toggle(data-toggle='dropdown', href='#')
-                              i.icon-user
-                              span.badge #{2}
-                          ul.dropdown-menu(role='menu', aria-labelledby='dLabel')
-                            // TODO:
-                            p Du har #{2} nya förfrågningar:
-                            hr
-                            // TODO:
-                            h6 #{"Förnamn Efternamn"}?
-                            .row-fluid
-                                a.btn.btn-small(href="#") Ja
-                                a.btn.btn-small(href="#") Nej
-                    li
                       |
                     li
                       .dropwdown
-                          button.btn.dropdown-toggle(data-toggle='dropdown', href='#')
+                          button#mark-as-read.btn.dropdown-toggle(data-toggle='dropdown', href='#')
                               i.icon-envelope
-                              span.badge #{20}
-                          ul.dropdown-menu(role='menu', aria-labelledby='dLabel')
-                              p Du har #{20} nya meddelanden:
-                              hr
-                              // For
-                              h6 #{"Ämne"}
-                              .row-fluid
-                                  a.btn.btn-small(href="#") Läs
+                              span.badge#msgs
                 p.navbar-text.pull-right
                     | Inloggad som:
                     a#nav-username.navbar-link(href='#') #{reqsessionuserid}

@@ -1,11 +1,5 @@
-//function decorateButtons () {
 
-//}
 $(document).ready(function() {
-    //console.log("decorateButtons, #3");
-   //decorateButtons();
-
-    //console.log("decorateButtons, #1");
     $('.remove-friend').click(function(event){
         console.log("ajax-dash: remove clicked");
 
@@ -26,7 +20,6 @@ $(document).ready(function() {
                 "<div class='alert alert-warning'><button type='button' class='close' data-dismiss='alert'>&times;</button><strong></strong> Vän borttagen!<div id='data'></div>"
             ).delay(2500).fadeTo( "slow" , 1.0, function() { $(this).children().remove(); });
 
-            // TODO: Ladda inte om hela sidan
             $('#accordion').load("/dash #accordion", function(){
                 $.getScript("/js/ajax-dash.js")
                     .done(function( script, textStatus ) {
@@ -36,10 +29,6 @@ $(document).ready(function() {
                         $( "div.log" ).text( "Triggered ajaxError handler." );
                     });
             });
-            //location.reload();
-            //decorateButtons();
-            //console.log("decorateButtons, #2");
-
         });
 
         posting.fail(function(){

@@ -9,7 +9,7 @@ $(document).ready(function() {
     $.ajax(
         {url:"/update", dataType:'json',
          success:function(json) {
-             console.log("Fick json tillbaka: " + json);
+             console.log("dash-editable.js Fick json tillbaka: " + json);
              editables = json;
 
              $('#firstname').text(editables["firstname"]);

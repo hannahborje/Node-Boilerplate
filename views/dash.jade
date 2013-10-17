@@ -20,13 +20,16 @@ block content
                  | Kontrollpanel
                li
                  a(href='#myPass', data-toggle='modal') Byt lösenord >>
-               li
-                 a(href='#myInbox', data-toggle='modal')
-                   | Inbox
-                   span.badge #{1}
+             include popupmsg
 
-         include popupmsg
-
+           accordion#accordion-left
+              .accordion-group
+                  .accordion-heading
+                      a.accordion-toggle(href="#collapseTwo", data-toggle="collapse", data-parent="#accordion-left")
+                          | Dina meddelanden >>
+                      .accordion-body.collapse.in#collapseTwo
+                          .accordion-inner
+                              ul.nav#inbox-list
          .span7
            .hero-unit
              .row-fluid
@@ -102,7 +105,7 @@ block content
             .accordion#accordion
                 .accordion-group
                     .accordion-heading
-                        a.accordion-toggle(href="#collapseOne", data-toggle="collapse", data-parent="#accordion2")
+                        a.accordion-toggle(href="#collapseOne", data-toggle="collapse", data-parent="#accordion")
                             | Dina vänner >>
                       .accordion-body.collapse.in#collapseOne
                         .accordion-inner
@@ -141,6 +144,7 @@ block footer
     script(src="/js/bootstrap.file-input.js")
     script(src="/js/ajax-search.js")
     script(src="/js/ajax-dash.js")
+    script(src="/js/ajax-navbar.js")
     script
         $(document).ready(function(){
            // För att ladda upp en bild

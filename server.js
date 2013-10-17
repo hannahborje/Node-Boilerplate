@@ -127,6 +127,8 @@ io.sockets.on('connection', function(socket){
 ///////////////////////////////////////////
 
 var allUsers = [{}]; // Plats för att spara alla användare i, vid sökning
+var inbox = [{}];
+var friendReqs = [];
 
 // Auktorisering
 function checkAuth(req, res, next) {
@@ -188,6 +190,17 @@ server.post('/edit', checkAuth, function(req, res){
     });
 });
 
+server.post('/markAsRead', function(req, res){
+    console.log("server.js MarkAsRead");
+
+    var username = req.session.user_id;
+
+    mongo.markAsRead(username, function(result){
+        console.log("server.js mongo.js markAsRead");
+        res.send(200);
+    });
+});
+
 server.post('/removeFriend', checkAuth, function(req,res){
     // parsa req-parameter
     console.log("server.js, /removeFriend, req.param.username:");
@@ -214,13 +227,12 @@ server.post('/sendMsg', checkAuth, function(req,res){
     console.log("server.js, /sendMsg:  msg, from, to: " + msg+from+to);
 
     mongo.sendMsg(msg, from, to, function() {
-        //
+        // TODO ?
 
         res.send(200);
 
     });
 });
-
 
 server.post('/try-register', function(req, res){
     var firstname = req.param('firstname', ''); // '' blir defaultvärde om inget hittas
@@ -246,7 +258,13 @@ server.post('/try-register', function(req, res){
 
 
 // GET requests //
-server.get('/', routes.start);
+server.get('/', function(req, res) {
+    if (!req.session.user_id) {
+        routes.start(req, res);
+    } else {
+        routes.dash(req, res);
+    }
+});
 
 // OBS! För testning enbart
 server.get('/500', function(req, res){
@@ -254,8 +272,13 @@ server.get('/500', function(req, res){
 });
 
 
-server.get('/about', routes.about);
-
+server.get('/about', function(req, res) {
+    if (!req.session.user_id) {
+        routes.about(req, res);
+    } else {
+        routes.dash(req, res);
+    }
+});
 
 server.get('/dash', checkAuth, function(req, res){
 
@@ -299,7 +322,13 @@ server.get('/dash', checkAuth, function(req, res){
 
 }); // Hämta användarens info från databasen
 
-server.get('/explore', routes.explore);
+server.get('/explore', function(req, res) {
+    if (!req.session.user_id) {
+        routes.explore(req, res);
+    } else {
+        routes.dash(req, res);
+    }
+});
 
 server.get('/getUsers', checkAuth, function(req, res){
         console.log("server.js, /getUsers");
@@ -337,14 +366,53 @@ server.get('/friend',checkAuth, function(req, res) {
 });
 
 
-server.get('/logout', function (req, res) {
+server.get('/logout', function(req, res) {
     delete req.session.user_id; // if existing?
     res.redirect('/');
 });
 
+
+// TODO:
+server.get('/navbar', function(req, res) {
+
+    console.log("server.js, /navbar");
+
+    var username = req.session.user_id;
+
+    mongo.inbox(username, function(messages){
+        console.log("server.js, /navbar, inbox");
+        inbox = messages;
+    });
+
+    var navData = {inbox: inbox, friendReqs: friendReqs};
+
+    console.log("server.js, /navbar, navData: " + navData );
+
+
+    //res.send(200);
+    res.json(navData, 200);
+});
+
+
+
 server.get('/register', routes.register);
-server.get('/signin', routes.signin);
-server.get('/start', routes.start);
+
+server.get('/signin', function(req, res) {
+    if (!req.session.user_id) {
+        routes.signin(req, res);
+    } else {
+        routes.dash(req, res);
+    }
+});
+
+server.get('/start',
+    function(req, res) {
+        if (!req.session.user_id) {
+            routes.start(req, res);
+        } else {
+            routes.dash(req, res);
+        }
+});
 
 // Hämtar data om inloggad användare
 server.get('/update',checkAuth, function(req, res){
@@ -360,10 +428,12 @@ server.get('/updateFriend',checkAuth, function(req, res){
 });
 
 //A Route for Creating a 500 Error (Useful to keep around)
+// TODO: redirecta om inloggad, eller?
 server.get('/500', function(req, res){
     throw new Error('This is a 500 Error');
 });
 
+// TODO: redirecta om inloggad, eller?
 //The 404 Route (ALWAYS Keep this as the last route)
 server.get('/*', function(req, res){
     throw new NotFound;

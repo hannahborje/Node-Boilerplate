@@ -241,6 +241,51 @@ exports.edit = function(username, key, value, callback) {
     });
 };
 
+
+exports.inbox = function(username, callback) {
+
+    var query = {username: username};
+
+    // Hitta vem vi ska skicka till
+    UserBox.findOne(query, function(err, doc){
+        if(err){
+            console.log("mongo.js: inbox(): UserBox.findOne(): err:" + err.msg );
+            callback();
+        } else {
+            console.log("mongo.js: inbox(): UserBox.findOne(): success" );
+            console.log(doc.messages);
+            callback(doc.messages);
+        }
+    });
+};
+
+exports.markAsRead = function(username, callback) {
+
+    var query = {username: username};
+
+     // Hitta vem vi ska skicka till
+    UserBox.findOne(query, function(err, doc){
+        if(err){
+            console.log("mongo.js: markAsRead: UserBox.findOne(): err:" + err.msg );
+            callback(false);
+        } else {
+            console.log("mongo.js: markAsRead: UserBox.findOne(): success" );
+
+            for (var i= 0; i < doc.messages.length; ++i){
+                console.log(i);
+                console.log("Before " + doc.messages[i].read);
+                doc.messages[i].read = true;
+                doc.save();
+                //console.log("After " + doc.messages[i].read);
+            }
+            callback(true);
+        }
+
+    });
+};
+
+
+
 // Den här funktionen anropas när dashboard reloadas och man vill skicka ny information om alla användare
 exports.update = function(username, callback){
     UserBio.findOne({username:username}, function(err, doc){
@@ -272,6 +317,8 @@ exports.removeFriend = function(username, friend, callback){
     });
 };
 
+
+
 exports.sendMsg = function(msg, from, to, callback) {
 
     var query = {username: to};
@@ -284,15 +331,13 @@ exports.sendMsg = function(msg, from, to, callback) {
             console.log("mongo.js: sendMsg(): UserBox.findOne(): err:" + err.msg );
             callback();
         } else {
-            var newMsg = {from: from, message: msg };
+            var newMsg = {from: from, message: msg, read: false };
             doc.messages.push(newMsg);
             doc.save();
             console.log("mongo.js: sendMsg(): UserBox.findOne(): success" );
             callback();
         }
     });
-
-
 };
 
 // TODO: Byt lösenord
