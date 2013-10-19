@@ -247,16 +247,12 @@ exports.markAsRead = function(username, callback) {
             console.log("mongo.js: markAsRead: UserBox.findOne(): err:" + err.msg );
             callback([{}]);
         } else {
-            console.log("Mongo: before/after");
             for (var i= 0; i < doc.messages.length; ++i){
-                console.log("\t" + doc.messages[i].read);
                 doc.messages[i].read = true;
-                console.log("\t\t" + doc.messages[i].read);
             }
             // TODO: Det sparas ej permanent
             doc.save(function(err){
-                if (err) console.log("doc.save, err: " + err.msg);
-                console.log("saved");
+                if (err) console.log("mongo.js, markAsRead, doc.save, err: " + err.msg);
             });
             callback(doc);
         }
