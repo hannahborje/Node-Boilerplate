@@ -1,4 +1,12 @@
-// Denna sida visas när man vill se hur Programmeringsklubben funkar
+//
+   Vän- / användar-sida
+   *********************
+   Programmeringsklubben
+   TDP013 Linköpings universitet
+   http://www.ida.liu.se/~TDP013/
+   2013-10 HT Läsperiod 1
+   Hannah Börjesson (hanbo174), Per Jonsson (perjo927), IP2
+   https://github.com/hannahborje/Node-Boilerplate
 
 extends layout
 
@@ -14,6 +22,15 @@ block content
     .container-fluid
       .row-fluid
          .span3
+            // Användarens vägg
+            accordion#accordion-left
+                .accordion-group
+                    .accordion-heading
+                        a.accordion-toggle(href="#collapseTwo", data-toggle="collapse", data-parent="#accordion-left")
+                            | Vägg >>
+                        .accordion-body.collapse.in#collapseTwo
+                            .accordion-inner
+                                ul.nav#inbox-list
          .span7
            .hero-unit
              .row-fluid
@@ -46,13 +63,15 @@ block content
                                 #education
                .columnB.pull-right
                  ul.thumbnails
-                   li.span12
+                   li.span10.pull-right
                        //.thumbnail
                        img.img-polaroid(src='/img/empty-pic.png')
                        .caption
                            // TODO: Lös inline
-                           .btn-group
-                                .dropdown
+                           .btn-group-inline
+                             .row-fluid
+                               .columnA.pull-left
+                                 .dropdown
                                     a.btn.btn-small.dropdown-toggle(data-toggle='dropdown', href='#')
                                         | #{friendtext}
                                       if (!isMe && !isFriend)
@@ -62,14 +81,14 @@ block content
                                                 a#friend-request.btn.btn-small(href="#") Ja
                                                 |
                                                 a.btn.btn-small(href="#") Nej
-                                .dropdown
-                                  if (!isMe && isFriend)
-                                    a.btn.btn-small(href='#sendMsg', data-toggle='modal')
+                               .columnB.pull-right
+                                 .dropdown
+                                   if (!isMe && isFriend)
+                                     a.btn.btn-small(href='#sendMsg', data-toggle='modal')
                                         | Skriv ett meddelande
                            include popupmsg
                  br
                  .result
-
            .row-fluid
              .span4
                h3
@@ -84,15 +103,16 @@ block content
                  | CV
                p.lead
                     #cv
-
          .span2
+            table
 
 block footer
     // Hemlig parameter
     div.username(style='visibility: hidden;') #{username}
     // Script
     script(src="/js/ajax-search.js")
-    script(src="/js/ajax-friend.js")
     script(src="/js/ajax-sendMsg.js")
+    script(src="/js/ajax-friend.js")
     script(src="/js/ajax-navbar.js")
+    script(src="/js/ajax-nav-markAsRead.js")
 

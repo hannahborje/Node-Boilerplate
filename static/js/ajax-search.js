@@ -1,30 +1,35 @@
+/*
+ Funktioner för sökning
+ *********************
+ Programmeringsklubben
+ TDP013 Linköpings universitet
+ http://www.ida.liu.se/~TDP013/
+ 2013-10 HT Läsperiod 1
+ Hannah Börjesson (hanbo174), Per Jonsson (perjo927), IP2
+ https://github.com/hannahborje/Node-Boilerplate
+ */
 
 $(document).ready(function(){
-
-    console.log("ajax-search.jade: kör jQuery-script");
-
-
+    // Behållare att spara resultat i
     var userDB = [{}];
     var selectedUser = "";
     var userMap = {};
 
     // gör en request till servern, hämta alla användardata
-    console.log("ajax-search.js: getting url: getUsers");
     var getting =  $.get("/getUsers");
-    getting.done(function( data, textStatus ) {
-        console.dir("ajax-search.js: getting done(success)" );
-        console.log("ajax-search.js: textStatus = " + textStatus);
 
+    getting.done(function( data, textStatus ) {
         // data innehåller info om alla användare i databasen
         userDB = data;
     });
     getting.fail(function(){
-        console.log("ajax-search.js: posting fail/error (getUsers)");
+        console.log("ajax-search.js: getting fail/error (getUsers)");
     });
 
     // Aktivera söktips
     $('#searchtip').tooltip('hide');
 
+    // Sökförslag
     $('.typeahead').typeahead({
         // parametern source matar typeahead med sökdata
         source: function(query, process){
@@ -53,33 +58,22 @@ $(document).ready(function(){
     }
     );
 
-    //myForm.submit(function() {
+    // Sök-knappen tryckt
     $('#userSearch').submit(function(event){
-        // Ta bort boxen med information varje gång
-        //$( ".result" ).html( "" );
-
-        // Stop form from submitting normally
         event.preventDefault();
 
-        //
-        // Get some values from elements on the page:
+        // Fånga info från trädet
         var $form = $( this ),
             soughtName = $form.find("input[name='search']").val(),
             url = "/friend?user=";
 
         // Har användaren valt ett av alternativen i sökrutan? Ananrs funkar det inte
         if (userMap[soughtName] != undefined){
-            // get friend + user ID
-            console.log("ajax-search.js, looking for userMap[soughtName]: " + userMap[soughtName]);
             url += userMap[soughtName];
             window.location = url;
-        }
-        else
-        {
-            console.log("ajax.search.js, could not find user");
+        } else  {
             // Aktivera söktips
             $('#searchtip').tooltip('show');
         }
-    }); // .submit
-
+    });
 });

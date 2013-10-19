@@ -1,3 +1,13 @@
+//
+   Start-navbar
+   *********************
+   Programmeringsklubben
+   TDP013 Linköpings universitet
+   http://www.ida.liu.se/~TDP013/
+   2013-10 HT Läsperiod 1
+   Hannah Börjesson (hanbo174), Per Jonsson (perjo927), IP2
+   https://github.com/hannahborje/Node-Boilerplate
+
 .navbar.navbar-inverse.navbar-fixed-top
     .navbar-inner
         .container
@@ -15,14 +25,14 @@
                     li
                         a(href='explore') Utforska
 
+                // Inloggningsruta
                 form(action="/authorize", method="post", id="myForm").navbar-form.pull-right.signin-tip
                     input.span2(type='text', placeholder='Email', name="email", required)
                     |
-                    // Felmeddelande
-                    a(href='#', id="signin-error", data-placement="bottom", data-toggle='tooltip',
-                    title='Vi kunde tyvärr inte logga in dig. Prova igen.')
                     input.span2(type='password', placeholder='Lösenord', name="password", required)
                     |
                     button.btn(type='submit') Logga in
+                    a(href='#', id="signin-error", data-placement="bottom", data-toggle='tooltip',
+                    title='Vi kunde tyvärr inte logga in dig. Prova igen.')
 
                 a(href='register').button.btn.btn-success(type='submit') Registrera

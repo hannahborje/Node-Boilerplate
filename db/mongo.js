@@ -1,7 +1,14 @@
-/**
- * Created by perjo927 on 2013-10-06.
- */
 /*
+ Databas
+ *********************
+ Programmeringsklubben
+ TDP013 Linköpings universitet
+ http://www.ida.liu.se/~TDP013/
+ 2013-10 HT Läsperiod 1
+ Hannah Börjesson (hanbo174), Per Jonsson (perjo927), IP2
+ https://github.com/hannahborje/Node-Boilerplate
+ -----------------------------
+
 Skapa defaultmapp för databasen
 $ sudo -p mkdir /data/db
 $ sudo chmod 0755 /data/db  alt. $ sudo chown $USER /data/db
@@ -27,7 +34,6 @@ var mongoose = require('mongoose');
 
 // importera Schema så att vi kan definiera hur våra collections ska se ut
 // Schema-instans = collection
-// lägg detta någon annanstans?
 var Schema = mongoose.Schema;
 
 // Definiera hur en användare ska auktoriseras
@@ -66,100 +72,86 @@ var User = mongoose.model('User', userSchema);
 var UserBio = mongoose.model('UserBio', userBio);
 var UserBox = mongoose.model('UserBox', userBox);
 
+// Lägg till vän
 exports.addFriend = function(username, friend, callback) {
-
     var query = {username: username};
 
-    // hitta min friend-array, spara innehållet
+    // Hitta min friend-array, spara innehållet
     UserBio.findOne(query, function(err, doc){
         if (err){
-            console.log("mongo.js: addFriend(): UserBio.find(): username:" + username );
-            // TODO: if err or not err do so and so (callback)
             callback();
         } else {
-            console.log("mongo.js: addFriend(): UserBio.findOne: doc.friends: " + doc.friends);
             doc.friends.push(friend);
             doc.save();
-
-            // TODO: if err or not err do so and so (callback)
             callback();
         }
     });
 };
 
+// Ta bort vän
 exports.removeFriend = function(username, friend, callback){
-
     var query = {username: username};
 
     UserBio.findOne(query, function(err, doc){
        if(err){
-           console.log("mongo.js: removeFriend(): UserBio.find(): username:" + username );
            callback();
        } else {
-           console.log("mongo.js: removeFriend(): UserBio.findOne: doc.friends: " + doc.friends);
            callback();
        }
-
     });
+};
 
-}
-
+// Auktorisera användarnamn och lösenord
 exports.auth = function(username, password, callback){
     User.find({username: username, pass: password}, function(err, docs){
         if (err) console.dir("mongo.js .auth() err: " + err);
 
-        console.dir("mongo.js .auth() => user: " + username + " pass: " + password);
-        console.dir("mongo.js .auth() found: " + docs);
-
         if (docs.length === 0){
-            console.log("mongo.js .auth(): docs are empty, no authorization");
+            // Går inte att auktorisera
             callback(false);
         }
-        else{
-            console.log("mongo.js .auth():  authorize");
+        else {
+            // Succé
             callback(true);
         }
     });
 };
 
+// Se om användaruppgifter är upptagna
 exports.find = function(username, callback){
-    console.log("mongo.js.find() was called");
-
     User.find({username: username}, function(err, docs) {
         if (err) console.dir("mongo.js .find() err: " + err);
 
-        console.dir("mongo.js .find() => user: " + username);
-        console.dir("mongo.js .find() resulted in: " + docs);
-
         if (docs.length === 0){
-            console.log("mongo.js .find(): docs are empty, no user occupies that name");
+            // Inte upptaget
             callback(false);
         }
         else{
-            console.log("mongo.js .find(): username is occupied! ");
+            // Upptaget
             callback(true);
         }
     });
 };
 
+// Hitta alla profiluppgifter
 exports.findAll = function(callback){
     UserBio.find({}, function(err, docs){
         if (err) console.dir("mongo.js .findAll() err: " + err);
-        console.dir("mongo.js .findAll()");
 
         if (docs.length === 0){
-            console.log("mongo.js .findAll(): docs are empty");
+            // Inte hittat
             callback([{}]);
         }
         else{
-            console.log("mongo.js .findAll(): We found something ");
+            // Hittat
             callback(docs);
         }
     });
 };
 
 
-// Den här funktionen anropas när dashboard reloadas och man vill skicka ny information om alla användare
+// Den här funktionen anropas när dashboard reloadas
+// och man vill skicka ny information om alla användare
 exports.isFriend = function(username, friend, callback){
     // Gå in i vår "profil" i databasen
     UserBio.findOne({username:username}, function(err, doc){
@@ -171,13 +163,11 @@ exports.isFriend = function(username, friend, callback){
         else {
             for (var f in doc.friends) {
                 if (doc.friends[f] === friend) {
-                    console.log("mongo.js: isFriend(): UserBio.find(): friend found:" + friend );
                     callback(true);
                     return;
                 }
             }
             // Ingen vän
-            console.log("mongo.js: isFriend(): UserBio.find(): friend not found");
             callback(false);
         }
     });
@@ -186,62 +176,51 @@ exports.isFriend = function(username, friend, callback){
 exports.save = function(firstname,lastname, username, password){
     // Skapa en användare att sätta in i vår collection
     var user = new User({firstname: firstname, lastname: lastname, username: username, pass: password });
+
     // Skapa profilinfo
-    var userbio = new UserBio({username: username, firstname: firstname, lastname: lastname, city: "Din stad", age: "Ålder",
-        occupation: "Yrke", company:"Företag", education:"Utbildning", about: "Om mig", knowledge:"Kunskaper", cv:"CV",
-    friends: [] });
+    var userbio = new UserBio({username: username, firstname: firstname, lastname: lastname,
+        city: "Din stad", age: "Ålder",        occupation: "Yrke", company:"Företag",
+        education:"Utbildning", about: "Om mig", knowledge:"Kunskaper", cv:"CV", friends: [] });
+
     // Skapa inbox
     var userbox = new UserBox({username: username, messages: [] });
 
-    // Each document can be saved to the database by calling its save method.
-    // The first argument to the callback will be an error if any occured.
+    // Spara till databasen
     user.save(function (err, doc) {
         if (err) console.dir("mongo.js .save(user) err: " + err);
-        //
-        console.dir("mongo.js .save(user) => saved in db: " + doc);
     });
     //
     userbio.save(function (err, doc) {
         if (err) console.dir("mongo.js .save() err: " + err);
-        //
-        console.dir("mongo.js .save(bio) => saved in db: " + doc);
     });
     //
     userbox.save(function (err, doc) {
         if (err) console.dir("mongo.js .save() err: " + err);
-        //
-        console.dir("mongo.js .save(bio) => saved in db: " + doc);
     });
 };
 
-
+// Redigera profilinfo
 exports.edit = function(username, key, value, callback) {
 
     var query = {username: username};
     var update = {};
     update[key] = value;
 
-
     UserBio.update(query, {$set: update}, {}, function(err, numAffected){
-        console.log("mongo.js: edit(): UserBio.update: " + key + ": " + value);
-        console.log("err:" + err);
-        console.log("numAffected: " + numAffected);
-        // if numaffected do so and so (callback)
+        console.log("mongo.edit(), err:" + err);
 
         // Ändra i user-databasen om det är förnamn och efternamn
         if (key === "firstname" || key === "lastname"){
             User.update(query, {$set: update}, {}, function(err, numAffected){
-                console.log("mongo.js: edit(): User.update: " + key + ": " + value + " update[key].value: " + update[key]);
-                console.log("err:" + err);
-                console.log("numAffected: " + numAffected);
+                console.log("mongo.edit(), err:" + err);
             });
         }
-        // TODO: Felhantering
+
         callback();
     });
 };
 
-
+// Hämta inbox
 exports.inbox = function(username, callback) {
 
     var query = {username: username};
@@ -252,18 +231,18 @@ exports.inbox = function(username, callback) {
             console.log("mongo.js: inbox(): UserBox.findOne(): err:" + err.msg );
             callback();
         } else {
-            console.log("mongo.js: inbox(): UserBox.findOne(): success" );
-            console.log(doc.messages);
             callback(doc.messages);
         }
     });
 };
 
+// Olästa meddelanden blir lästa
 exports.markAsRead = function(username, callback) {
 
     var query = {username: username};
 
-     // Hitta vem vi ska skicka till
+    // TODO: FÅ DET ATT FUNKA
+    // Hitta vem vi ska skicka till
     UserBox.findOne(query, function(err, doc){
         if(err){
             console.log("mongo.js: markAsRead: UserBox.findOne(): err:" + err.msg );
@@ -272,12 +251,12 @@ exports.markAsRead = function(username, callback) {
             console.log("mongo.js: markAsRead: UserBox.findOne(): success" );
 
             for (var i= 0; i < doc.messages.length; ++i){
-                console.log(i);
                 console.log("Before " + doc.messages[i].read);
                 doc.messages[i].read = true;
-                doc.save();
-                //console.log("After " + doc.messages[i].read);
+                doc.save(); // TODO ???
+                console.log("After " + doc.messages[i].read);
             }
+            doc.save(); // TODO ????
             callback(true);
         }
 
@@ -285,8 +264,8 @@ exports.markAsRead = function(username, callback) {
 };
 
 
-
-// Den här funktionen anropas när dashboard reloadas och man vill skicka ny information om alla användare
+// Den här funktionen anropas när dashboard reloadas
+// och man vill skicka ny information om alla användare
 exports.update = function(username, callback){
     UserBio.findOne({username:username}, function(err, doc){
         if (err) console.log("mongo.js: update(): UserBio.find(): username:" + username );
@@ -295,9 +274,8 @@ exports.update = function(username, callback){
     });
 };
 
-
+// Ta bort vän
 exports.removeFriend = function(username, friend, callback){
-
     var query = {username: username};
 
     UserBio.findOne(query, function(err, doc){
@@ -305,10 +283,8 @@ exports.removeFriend = function(username, friend, callback){
             console.log("mongo.js: removeFriend(): UserBio.find(): err:" + err.msg );
             callback(false);
         } else {
-            console.log("mongo.js: removeFriend(): UserBio.findOne: doc.friends: " + doc.friends);
-            //var myFriends = doc.friends;
             var removedFriend = doc.friends.indexOf(friend);
-            console.log("mongo.js: removeFriend(): UserBio.findOne: index of friend: " + removedFriend);
+
             // Tag bort vän
             doc.friends.splice(removedFriend,1);
             doc.save();
@@ -318,12 +294,9 @@ exports.removeFriend = function(username, friend, callback){
 };
 
 
-
+// Skriv ett meddelande -> skicka -> sendMsg
 exports.sendMsg = function(msg, from, to, callback) {
-
     var query = {username: to};
-
-    console.log("mongo.js, sendMsg(): " + msg+from+to);
 
     // Hitta vem vi ska skicka till
     UserBox.findOne(query, function(err, doc){
@@ -334,11 +307,7 @@ exports.sendMsg = function(msg, from, to, callback) {
             var newMsg = {from: from, message: msg, read: false };
             doc.messages.push(newMsg);
             doc.save();
-            console.log("mongo.js: sendMsg(): UserBox.findOne(): success" );
             callback();
         }
     });
 };
-
-// TODO: Byt lösenord
-// TODO: Inbox

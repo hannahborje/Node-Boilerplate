@@ -1,3 +1,14 @@
+//
+   Navbar
+   *********************
+   Programmeringsklubben
+   TDP013 Linköpings universitet
+   http://www.ida.liu.se/~TDP013/
+   2013-10 HT Läsperiod 1
+   Hannah Börjesson (hanbo174), Per Jonsson (perjo927), IP2
+   https://github.com/hannahborje/Node-Boilerplate
+
+
 .navbar.navbar-inverse.navbar-fixed-top
     .navbar-inner
         .container-fluid
@@ -5,6 +16,7 @@
                 span.icon-bar
                 span.icon-bar
                 span.icon-bar
+            // Meny
             a.brand(href='dash') Programmeringsklubben
             .nav-collapse.collapse
                 ul.nav
@@ -14,6 +26,7 @@
                         a(href='about') Om
                 ul.nav
                     li
+                        // Sök
                         form#userSearch.navbar-form.pull-right
 
                           a(href='#', id="searchtip", data-placement="bottom", data-toggle='tooltip',
@@ -29,11 +42,12 @@
                     li
                       |
                     li
-                      .dropwdown
-                          button#mark-as-read.btn.dropdown-toggle(data-toggle='dropdown', href='#')
+                        // Gå till inbox / markera som läst
+                        button#mark-as-read.btn
                               i.icon-envelope
                               span.badge#msgs
                 p.navbar-text.pull-right
+                    // Fler menyval
                     | Inloggad som:
                     a#nav-username.navbar-link(href='#') #{reqsessionuserid}
                     &nbsp;

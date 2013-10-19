@@ -1,18 +1,22 @@
-// Vi vill stanna kvar på sidan om datan är invalid. annars skickar server.js oss vidare
-$(document).ready(function() {
-  console.log("register.jade: kör jQuery-script");
+/*
+ Funktioner för registrering
+ *********************
+ Programmeringsklubben
+ TDP013 Linköpings universitet
+ http://www.ida.liu.se/~TDP013/
+ 2013-10 HT Läsperiod 1
+ Hannah Börjesson (hanbo174), Per Jonsson (perjo927), IP2
+ https://github.com/hannahborje/Node-Boilerplate
+ */
 
-    //myForm.submit(function() {
+$(document).ready(function() {
+
     $('#userForm').submit(function(event){
 
-
-      // Stop form from submitting normally
       event.preventDefault();
 
       if (validate()) {
-        console.log("ajax-register.js: form is valid ");
-
-        // Get some values from elements on the page:
+        // Fånga input
         var $form = $( this ),
             firstname = $form.find( "input[name='firstname']" ).val(),
             lastname = $form.find( "input[name='lastname']" ).val(),
@@ -21,21 +25,18 @@ $(document).ready(function() {
             url = $form.attr( "action"),
             type = $form.attr("method") ;
 
-        // Send the data using post
-        console.log("ajax-register.js: posting to url: " + url);
+        // Skicka
         var posting =  $.post( url, {firstname: firstname, lastname: lastname, user : user, pass: pass });
 
-        // Put the results in a div
+        // Gå till inlogg
         posting.done(function( data, textStatus ) {
-            console.dir("ajax-register.js: posting done(success)" );
-            console.log("ajax-register.js: textStatus = " + textStatus);
-
             $( ".result" ).html(
                 "<div class='alert alert-success'><button type='button' class='close' data-dismiss='alert'>&times;</button><strong>Grattis!</strong> Registreringen lyckades! Du förs nu till inloggningssidan. <div id='data'></div>"
             ).delay( 3000 );
             window.location = "/signin"; // Redirect till signin
         });
 
+        // Stanna kvar
         posting.fail(function(){
             console.log("ajax-register.js: posting fail/error");
             $( ".result" ).html(

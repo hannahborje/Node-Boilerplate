@@ -1,24 +1,14 @@
+//
+   Pop-up-dialogrutor
+   *********************
+   Programmeringsklubben
+   TDP013 Linköpings universitet
+   http://www.ida.liu.se/~TDP013/
+   2013-10 HT Läsperiod 1
+   Hannah Börjesson (hanbo174), Per Jonsson (perjo927), IP2
+   https://github.com/hannahborje/Node-Boilerplate
 
-#myPass.modal.hide.fade
-    .modal-header
-        button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
-        h3 Modal header
-    .modal-body
-        p One fine body…
-    .modal-footer
-        a.btn(href='#') Close
-        a.btn.btn-primary(href='#') Save changes
-
-#myInbox.modal.hide.fade
-    .modal-header
-        button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
-        h3 Modal header
-    .modal-body
-        p One fine body…
-    .modal-footer
-        a.btn(href='#') Close
-        a.btn.btn-primary(href='#') Save changes
-
+// Skicka meddelanden
 #sendMsg.modal.hide.fade
     .modal-header
         button#close-msg.close(type='button', data-dismiss='modal', aria-hidden='true') ×
@@ -29,13 +19,14 @@
         a#dispose-msg.btn(href='#') Släng
         a#write-msg.btn.btn-primary(href='/sendMsg', name="write-msg", title="") Skicka
 
+// Kontakta oss
 #contact.modal.hide.fade
     .modal-header
         button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
         h3 Kontakta oss
     .modal-body
-        a(href="http://www.linkedin.com/in/djpjgj") Pers LinkedIn
+        a(href="http://www.linkedin.com/in/djpjgj", target="blank") Pers LinkedIn
         br
-        a(href="http://se.linkedin.com/in/hannahborjesson/") Hannahs LinkedIn
+        a(href="http://se.linkedin.com/in/hannahborjesson/", target="blank") Hannahs LinkedIn
     .modal-footer
 

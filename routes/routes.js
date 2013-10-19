@@ -1,44 +1,47 @@
+/*
+Funktioner för rendering av jade-filer
+*********************
+Programmeringsklubben
+TDP013 Linköpings universitet
+http://www.ida.liu.se/~TDP013/
+2013-10 HT Läsperiod 1
+Hannah Börjesson (hanbo174), Per Jonsson (perjo927), IP2
+https://github.com/hannahborje/Node-Boilerplate
+*/
 
-// TODO - sammanställ parametrar
+// Variabler till jade-templates
 var options =  { locals: {
-    title : 'Your Page Title'
-        ,description: 'Your Page Description'
-        ,author: 'Your Name'
-        ,analyticssiteid: 'XXXXXXX'
+    title : 'Programmeringsklubben'
+        ,description: 'Programmeringsklubben. En social webbplats och ett projekt på Linköpings universitet.'
+        ,author: 'Hannah Börjesson, Per Jonsson'
         ,reqsessionuserid: 'Användarnamn'
 }};
 
-
-// Ta ej bort, Innehåller intressant funktionalitet
-// TODO - kolla upp
-exports.index = function(req,res) {
-    res.render("oldindex.jade", options);
-};
-////////
-
-
-
+// Hem / start
 exports.start = function(req,res) {
-    options.locals.title = "Programmeringsklubben";
     res.render("./start.jade", options);
 };
 
-exports.dash = function(req,res, friends) {
-    console.log("router.js: rendering dash.jade");
-    options.locals.title = "Förnamn Efternamn: Programmeringsklubben"; // TODO
+// Kontrollpanel / dashboard
+exports.dash = function(req,res, friends, me) {
+    options.locals.title = "Programmeringsklubben: " + me;
     options.locals.reqsessionuserid = req.session.user_id;
     options.locals.friends = friends;
+
     res.render("./dash.jade", options);
 };
 
+// Utforska
 exports.explore = function(req,res) {
-    options.locals.title = "Utforska Programmeringsklubben";
+    options.locals.title = "Programmeringsklubben: Utforska";
     res.render("./explore.jade", options);
 };
 
+// Template för vän eller användare som inte är vän
 exports.friend = function(req,res, friendData, isFriend) {
     var fullname = friendData["firstname"] + " " + friendData["lastname"];
-    options.locals.title = fullname + ": Programmeringsklubben";
+
+    options.locals.title = "Programmeringsklubben: " +  fullname;
     options.locals.username =  friendData["username"];
     options.locals.reqsessionuserid = req.session.user_id;
     options.locals.isFriend = true;
@@ -59,15 +62,15 @@ exports.friend = function(req,res, friendData, isFriend) {
 
     res.render("./friend.jade", options);
 };
+
+// Registrering av ny användare
 exports.register = function(req,res) {
     options.locals.title = "Registrera dig hos Programmeringsklubben";
-    console.log("routes.js: rendering register.jade");
     res.render("./register.jade", options);
 };
 
 exports.signin = function(req,res) {
     options.locals.title = "Logga in hos Programmeringsklubben";
-    console.log("routes.js: rendering signin.jade");
     res.render("./signin.jade", options);
 };
 

@@ -1,4 +1,13 @@
-// Denna sida visas när man vill se hur Programmeringsklubben funkar
+//
+   Kontrollpanel
+   *********************
+   Programmeringsklubben
+   TDP013 Linköpings universitet
+   http://www.ida.liu.se/~TDP013/
+   2013-10 HT Läsperiod 1
+   Hannah Börjesson (hanbo174), Per Jonsson (perjo927), IP2
+   https://github.com/hannahborje/Node-Boilerplate
+
 
 extends layout
 
@@ -14,14 +23,6 @@ block content
     .container-fluid
       .row-fluid
          .span3
-           .well.sidebar-nav
-             ul.nav.nav-list
-               li.nav-header
-                 | Kontrollpanel
-               li
-                 a(href='#myPass', data-toggle='modal') Byt lösenord >>
-             include popupmsg
-
            accordion#accordion-left
               .accordion-group
                   .accordion-heading
@@ -46,7 +47,6 @@ block content
                                 | Efternamn #{""}
                      tr
                          td
-
                              p
                                  | ORT
                                  br
@@ -57,7 +57,6 @@ block content
                                  | FÖRETAG
                                  br
                                  | UTBILDNING
-
                          td
                              p
                                  a#city(href='#')
@@ -76,7 +75,7 @@ block content
                                      | Redigera
                .columnB.pull-right
                  ul.thumbnails
-                   li.span10
+                   li.span10.pull-right
                        //.thumbnail
                        img.img-polaroid(src='/img/empty-pic.png')
                        .caption
@@ -138,12 +137,12 @@ block content
             br
 
 
-
 block footer
     script(src="/js/dash-editable.js")
     script(src="/js/bootstrap.file-input.js")
     script(src="/js/ajax-search.js")
     script(src="/js/ajax-dash.js")
+    script(src="/js/ajax-nav-markAsRead.js")
     script(src="/js/ajax-navbar.js")
     script
         $(document).ready(function(){

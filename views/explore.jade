@@ -1,4 +1,12 @@
-// Denna sida visas när man vill se hur Programmeringsklubben funkar
+//
+   Denna sida visas när man vill se hur Programmeringsklubben funkar
+   *********************
+   Programmeringsklubben
+   TDP013 Linköpings universitet
+   http://www.ida.liu.se/~TDP013/
+   2013-10 HT Läsperiod 1
+   Hannah Börjesson (hanbo174), Per Jonsson (perjo927), IP2
+   https://github.com/hannahborje/Node-Boilerplate
 
 extends layout
 
@@ -14,16 +22,26 @@ block content
     .container-fluid
         .row-fluid
             .span3
-                .well.sidebar-nav
-                    ul.nav.nav-list
-                        li.nav-header
-                            | Kontrollpanel
-                        li
-                            a(href='#myPass', data-toggle='modal') Byt lösenord >>
-                        li
-                            a(href='#myInbox', data-toggle='modal')
-                                | Inbox
-                                span.badge #{1}
+              accordion#accordion-left
+                .accordion-group
+                    .accordion-heading
+                        a.accordion-toggle(href="#collapseTwo", data-toggle="collapse", data-parent="#accordion-left")
+                            | Dina meddelanden >>
+                        .accordion-body.collapse.in#collapseTwo
+                            .accordion-inner
+                                ul.nav#inbox-list
+                                   h6
+                                     | Från: hannah@student.se
+                                   p
+                                      | Hej Per!
+                                      br
+                                      br
+                                      | Vad roligt att du också har gått med i Programmeringsklubben!
+                                      br
+                                      br
+                                      | Hälsningar, Hannah
+
+
             include popupmsg
             .span7
                 .hero-unit
@@ -70,7 +88,6 @@ block content
                         .columnB.pull-right
                             ul.thumbnails
                                 li.span10
-                                    .thumbnail
                                         img.img-polaroid(src='/img/empty-pic.png')
                                         .caption
                                             p
@@ -118,18 +135,24 @@ block content
                                     li
                                         .well.well-small
                                             .row-fluid
-                                                a(href="#") #{"Förnamn"} #{"Efternamn"} #{1}
+                                                a(href="#") #{"Ada"} #{"Lovelace"}
                                                 .dropdown
                                                     a.btn.btn-small.dropdown-toggle(data-toggle='dropdown', href='#')
                                                         i.icon-trash
                                                     ul.dropdown-menu(role='menu', aria-labelledby='dLabel')
                                                         p Vill du ta bort
-                                                        h6 #{"Förnamn Efternamn"}?
+                                                        h6 #{"Ada Lovelace"}?
                                                         .row-fluid
                                                             a.btn.btn-small(href="#") Ja
-                                                            a.btn.btn-small(href="#") Ja
+                                                            a.btn.btn-small(href="#") Nej
                                                     a.btn.btn-small(href="#")
                                                         i.icon-user
                                     // end for
+                                ul.nav
+                                    li
+                                        br
+                                    li
+                                        br
+                                    li
     block footer
 

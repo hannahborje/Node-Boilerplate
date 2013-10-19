@@ -1,15 +1,22 @@
-
+/*
+ Redigerbara fält
+ *********************
+ Programmeringsklubben
+ TDP013 Linköpings universitet
+ http://www.ida.liu.se/~TDP013/
+ 2013-10 HT Läsperiod 1
+ Hannah Börjesson (hanbo174), Per Jonsson (perjo927), IP2
+ https://github.com/hannahborje/Node-Boilerplate
+ */
 
 $(document).ready(function() {
-    // Varje gång sidan laddas (.ready()), gör följande:
-    // Hämta alla key-values från mongoDB genom nedanstående asynkrona request
 
     var editables = {};
 
+    // Uppdatera sidan med info i redigerbara fält
     $.ajax(
         {url:"/update", dataType:'json',
          success:function(json) {
-             console.log("dash-editable.js Fick json tillbaka: " + json);
              editables = json;
 
              $('#firstname').text(editables["firstname"]);
@@ -39,7 +46,6 @@ $(document).ready(function() {
         pk: 'firstname',
 
         success: function(data){
-            console.log("editable.js: Det här gick ju bra:" + data.msg)
         },
         error: function(err){
             console.log("editable.js, fel: " + err.status);
@@ -51,7 +57,6 @@ $(document).ready(function() {
         title: 'Efternamn',
         pk: 'lastname',
         success: function(data){
-            console.log("editable.js: Det här gick ju bra:" + data.msg)
         },
         error: function(err){
             console.log("editable.js, fel: " + err.status);
@@ -66,13 +71,11 @@ $(document).ready(function() {
         value: 'Ort',
         pk: 'city',
         success: function(data){
-            console.log("editable.js: Det här gick ju bra:" + data.msg)
         },
         error: function(err){
             console.log("editable.js, fel: " + err.status);
     }
     });
-
 
     $('#age').editable({
         type: 'text',
@@ -80,13 +83,11 @@ $(document).ready(function() {
         title: 'Ålder',
         pk: 'age',
         success: function(data){
-            console.log("editable.js: Det här gick ju bra:" + data.msg)
         },
         error: function(err){
             console.log("editable.js, fel: " + err.status);
         }
     });
-
 
     $('#occupation').editable({
         type: 'text',
@@ -94,7 +95,6 @@ $(document).ready(function() {
         title: 'Yrke',
         pk: 'occupation',
         success: function(data){
-            console.log("editable.js: Det här gick ju bra:" + data.msg)
         },
         error: function(err){
             console.log("editable.js, fel: " + err.status);
@@ -107,7 +107,6 @@ $(document).ready(function() {
         title: 'Företag',
         pk: 'company',
         success: function(data){
-            console.log("editable.js: Det här gick ju bra:" + data.msg)
         },
         error: function(err){
             console.log("editable.js, fel: " + err.status);
@@ -120,7 +119,6 @@ $(document).ready(function() {
         title: 'Utbildning',
         pk: 'education',
         success: function(data){
-            console.log("editable.js: Det här gick ju bra:" + data.msg)
         },
         error: function(err){
             console.log("editable.js, fel: " + err.status);
@@ -133,7 +131,6 @@ $(document).ready(function() {
         title: 'Om mig',
         pk: 'about',
         success: function(data){
-            console.log("editable.js: Det här gick ju bra:" + data.msg)
         },
         error: function(err){
             console.log("editable.js, fel: " + err.status);
@@ -146,7 +143,6 @@ $(document).ready(function() {
         title: 'Kunskap',
         pk: 'knowledge',
         success: function(data){
-            console.log("editable.js: Det här gick ju bra:" + data.msg)
         },
         error: function(err){
             console.log("editable.js, fel: " + err.status);
@@ -159,7 +155,6 @@ $(document).ready(function() {
         title: 'CV',
         pk: 'cv',
         success: function(data){
-            console.log("editable.js: Det här gick ju bra:" + data.msg)
         },
         error: function(err){
             console.log("editable.js, fel: " + err.status);

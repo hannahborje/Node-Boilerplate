@@ -1,26 +1,32 @@
-// Vi vill stanna kvar på sidan om datan är invalid. annars skickar server.js oss vidare
-$(document).ready(function() {
-    console.log("signin.jade: kör jQuery-script");
+/*
+ Funktioner för inloggning
+ *********************
+ Programmeringsklubben
+ TDP013 Linköpings universitet
+ http://www.ida.liu.se/~TDP013/
+ 2013-10 HT Läsperiod 1
+ Hannah Börjesson (hanbo174), Per Jonsson (perjo927), IP2
+ https://github.com/hannahborje/Node-Boilerplate
+ */
 
-    //myForm.submit(function() {
+$(document).ready(function() {
     $('#myForm').submit(function(event){
 
-        // Stop form from submitting normally
+        // Vill hindra övertagande av server.js
         event.preventDefault();
 
-        // Get some values from elements on the page:
+        // Hämta värden
         var $form = $( this ),
             user = $form.find( "input[name='email']" ).val(),
             pass = $form.find( "input[name='password']" ).val(),
             url = $form.attr( "action"),
             type = $form.attr("method") ;
 
-        // Send the data using post
+        // Skicka post-request
         var posting = $.post( url, {user : user, pass: pass });
 
-        // Put the results in a div
+        // Visa resultat
         posting.done(function( data ) {
-            console.dir("ajax-signin.js: posting success/done" );
             window.location = "/dash"; // Skicka till dashboard
         });
 
@@ -32,6 +38,7 @@ $(document).ready(function() {
         });
     });
 
+    // Ta bort popupfönster
     $(".signin-tip").mouseenter(function(){
         $('#signin-error').tooltip('hide');
     });

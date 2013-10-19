@@ -1,15 +1,14 @@
 {
-  "name": "YOUR-PROJECT-NAME-HERE",
-  "description": "YOUR PROJECT DESCRIPTION HERE",
-  "author": "YOUR NAME <your@emailaddress.com>",
-  "version": "0.0.1",
+  "name": "Programmeringsklubben",
+  "description": "TDP013 Linköpings Universitet",
+  "author": "Hannah Börjesson, Per Jonsson",
+  "version": "0.1.0",
   "dependencies": {
     "connect": "1.8.5",
     "connect-mongo": "0.3.3",
     "express": "2.5.2",
     "jade": "0.20.0",
     "mongoose": "2.4.8",
-    "socket.io": "0.8.7",
     "express-mongoose": "0.4.0",
     "cors": "1.0.1"
   },

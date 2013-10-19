@@ -1,3 +1,14 @@
+//
+   Registreringssida
+   *********************
+   Programmeringsklubben
+   TDP013 Linköpings universitet
+   http://www.ida.liu.se/~TDP013/
+   2013-10 HT Läsperiod 1
+   Hannah Börjesson (hanbo174), Per Jonsson (perjo927), IP2
+   https://github.com/hannahborje/Node-Boilerplate
+
+
 extends layout
 
 block head
@@ -5,7 +16,6 @@ block head
 
 block content
     include nav-unlogged-in
-    //include nav-start
 
     .container
         form(action="/try-register", method='post').form-signin#userForm
@@ -21,15 +31,13 @@ block content
             input.input-block-level(type='password', placeholder='Bekräfta lösenord',
             name="confirm", id="confirm", required)
             button.btn.btn-large.btn-success(type='submit')#submit Registrera
-            // TODO
             br
             p
+                // Info-ruta
                .result
 
 block footer
-    // Courtesy of jqueryvalidation.org ***
-    script(src='http://jquery.bassistance.de/validate/jquery.validate.js')
-    //
+    // Courtesy of jqueryvalidation.org
+    script(src='/js/jquery.validate.js')
     script(src="/js/validate.js")
     script(src="/js/ajax-register.js")
-    // ajax-signin
