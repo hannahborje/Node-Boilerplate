@@ -225,7 +225,6 @@ server.post('/removeFriend', checkAuth, function(req,res){
     res.send(200);
 });
 
-// TODO:
 // Skriv ett meddelande på en vägg
 server.post('/sendMsg', checkAuth, function(req,res){
     var msg = req.param('message', '');
@@ -326,20 +325,15 @@ server.get('/logout', function(req, res) {
     res.redirect('/');
 });
 
-//
+// TODO
 // Markera att vi läst meddelanden
-server.get('/mark', function(req, res) {
-    console.log("server.js MarkAsRead");
+server.get('/markAsRead', function(req, res) {
 
-    /*
      var username = req.session.user_id;
 
-     mongo.markAsRead(username, function(result){
-     console.log("server.js mongo.js markAsRead");
-     res.send(200);
+     mongo.markAsRead(username, function(doc){
+         res.send(200);
      });
-     */
-    res.send(200);
 });
 
 

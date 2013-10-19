@@ -241,28 +241,27 @@ exports.markAsRead = function(username, callback) {
 
     var query = {username: username};
 
-    // TODO: FÅ DET ATT FUNKA
     // Hitta vem vi ska skicka till
     UserBox.findOne(query, function(err, doc){
         if(err){
             console.log("mongo.js: markAsRead: UserBox.findOne(): err:" + err.msg );
-            callback(false);
+            callback([{}]);
         } else {
-            console.log("mongo.js: markAsRead: UserBox.findOne(): success" );
-
+            console.log("Mongo: before/after");
             for (var i= 0; i < doc.messages.length; ++i){
-                console.log("Before " + doc.messages[i].read);
+                console.log("\t" + doc.messages[i].read);
                 doc.messages[i].read = true;
-                doc.save(); // TODO ???
-                console.log("After " + doc.messages[i].read);
+                console.log("\t\t" + doc.messages[i].read);
             }
-            doc.save(); // TODO ????
-            callback(true);
+            // TODO: Det sparas ej permanent
+            doc.save(function(err){
+                if (err) console.log("doc.save, err: " + err.msg);
+                console.log("saved");
+            });
+            callback(doc);
         }
-
     });
 };
-
 
 // Den här funktionen anropas när dashboard reloadas
 // och man vill skicka ny information om alla användare

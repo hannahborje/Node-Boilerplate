@@ -20,6 +20,7 @@ block head
 
 block content
     include nav-logged-in
+
     .container-fluid
       .row-fluid
          .span3
@@ -138,11 +139,12 @@ block content
 
 
 block footer
+    // Hemlig parameter
+    div.username(style='visibility: hidden;') myself
     script(src="/js/dash-editable.js")
     script(src="/js/bootstrap.file-input.js")
     script(src="/js/ajax-search.js")
     script(src="/js/ajax-dash.js")
-    script(src="/js/ajax-nav-markAsRead.js")
     script(src="/js/ajax-navbar.js")
     script
         $(document).ready(function(){

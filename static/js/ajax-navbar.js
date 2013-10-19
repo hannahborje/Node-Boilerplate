@@ -34,6 +34,21 @@ $(document).ready(function() {
                 setTimeout(check,10000);
             });
     }
-
+    // Anropa ovan
     check();
+
+    // Klicka på brevboxen för att notifieringar ska försvinna
+    $("#mark-as-read").click(function(event){
+        // requesta
+        var getting = $.get( "/markAsRead");
+
+        // Visa resultat
+        getting.done(function( data ) {
+            // Ta oss till vår inbox, om vi är på en annan sida
+            if ($(".username").text() != "myself") window.location = "/dash";
+        });
+        getting.fail(function(){
+            console.log("ajax-navbar.js, /markAsRead, get, fail");
+        });
+    });
 });
