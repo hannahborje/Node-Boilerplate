@@ -1,0 +1,26 @@
+installera mocha globalt: $sudo npm install -g mocha
+
+• De testfall man skriver skall testa de "instrumenterade"
+	versionerna av servern, dvs de som finns i lib-coverage
+
+	Stå i roten av projektet och exekvera
+	• npm install mocha
+	• npm install should
+	• npm install superagent
+	ev. npm install mongodb om mocha inte hittar mongodb
+
+	• Skriv testfall och placera de i mappen test
+	•./node_modules/.bin/mocha -R html-cov > coverage.html
+	• Öppna coverage.html för att se code-coverage
+
+	Kom ihåg att köra JScoverage varje gång ni ändrat er node.js kod
+	innan ni kör Mocha
+
+	Stå i projektmappen och exekvera 
+	$jscoverage lib lib-coverage
+	då skapas mappen lib-coverage och placerar ”instrumented”
+	versioner av lib-filerna i mappen lib-coverage
+
+	jscoverage --no-highlight lib lib-coverage
+	 (TAR BORT MESSY OUTPUT)
+
