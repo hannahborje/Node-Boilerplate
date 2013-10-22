@@ -22,5 +22,5 @@ installera mocha globalt: $sudo npm install -g mocha
 	versioner av lib-filerna i mappen lib-coverage
 
 	jscoverage --no-highlight lib lib-coverage
-	 (TAR BORT MESSY OUTPUT)
+
 
