@@ -72,7 +72,7 @@ block content
                              .row-fluid
                                .columnA.pull-left
                                  .dropdown
-                                    a.btn.btn-small.dropdown-toggle(data-toggle='dropdown', href='#')
+                                    a.btn.btn-small.dropdown-toggle(data-toggle='dropdown', href='#', id="submit-request")
                                         | #{friendtext}
                                       if (!isMe && !isFriend)
                                         ul.dropdown-menu(role='menu', aria-labelledby='dLabel')
@@ -84,7 +84,7 @@ block content
                                .columnB.pull-right
                                  .dropdown
                                    if (!isMe && isFriend)
-                                     a.btn.btn-small(href='#sendMsg', data-toggle='modal')
+                                     a.btn.btn-small(href='#sendMsg', data-toggle='modal', id="msg-toggle")
                                         | Skriv ett meddelande
                            include popupmsg
                  br

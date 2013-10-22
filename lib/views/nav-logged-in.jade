@@ -32,7 +32,7 @@
 
                             input.span2(type='text', placeholder='Sök efter användare', data-provide="typeahead",
                             name="search", id = "search", autocomplete="off").typeahead
-                            button.btn(type='submit')
+                            button.btn(type='submit', id="search-submit")
                               i.icon-search
                 ul.nav
                     li
@@ -49,4 +49,4 @@
                     | Inloggad som:
                     a#nav-username.navbar-link(href='#') #{reqsessionuserid}
                     &nbsp;
-                    a.btn-success.btn-small(href="/logout") Logga ut
+                    a.btn-success.btn-small(href="/logout", id="logout") Logga ut

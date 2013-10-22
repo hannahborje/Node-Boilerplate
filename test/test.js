@@ -8,8 +8,8 @@
 
   Körning (stå i roten av projektet):
   $ mocha
+
   Ev behöver processen $ mongod också startas
-  $ ./node_modules/.bin/mocha -R html-cov > coverage.html för code coverage
 
   Installera mocha globalt:  $ sudo npm install -g mocha
   Installera mocha i projektmappen:  $ npm install mocha
@@ -23,33 +23,22 @@
   Testning av backend  skall ske med Mocha (med JScoverage)
 
   Alla huvudsakliga funktioner skall testas grundligt,
-  det skall kunna motiveras varför vi testar vissa data
-  samt varför vi beslutat att begränsa oss till denna data.
+  Vi testar här alla URL:er som vi kan anropa och att de ger
+  tillbaka förväntat resultat.
 */
 
 var should = require('should');
 var request = require('superagent');
 var assert = require('assert');
-
+//var expect = require('expect');
 var index = require('../lib-coverage/server.js');
 
 var port = 8082;
 
 var endpoint = "http://0.0.0.0:" + port;
 
-// Förbered save-URL med korrekta parametrar
-//var savePath = "/save" + "?msg=Meddelande";
-// Förbered flag-URL med korrekta skrina parametrar
-//var hexvalue = "5232f3a3e2206ca317000001";
-//var flagPath = "/flag" + "?ID=" + hexvalue;
-
 
 describe('Server', function() {
-
-    // INLOGGAD
-       // describe ..
-    // EJ INLOGGAD
-       // describe ..
 
     // Om anropet har en omappad URL ska vi redirectas och få 200 tillbaka
     describe("GET /undefined", function() {
@@ -71,72 +60,160 @@ describe('Server', function() {
         });
     });
 
-
-    /*
-
-        // KRAV:  Det skall finnas möjlighet att via ett HTTP-anrop till den
-        // utvecklade Node.js-appen spara ett nytt meddelande i MongoDB.
-        describe("GET /save?msg=Meddelande", function() {
-            it('should return status 200', function(done) {
-                request(endpoint + savePath).end(function(res) {
-                    // Ska få 200 tillbaka
-                    res.status.should.equal(200);
-                    done();
-                });
+    // Om anropet har en omappad URL ska vi redirectas och få 200 tillbaka
+    describe("GET /*", function() {
+        it('should return status 200', function(done) {
+            request(endpoint + "/*").end(function(res) {
+                res.status.should.equal(200);
+                done();
             });
         });
+    });
 
-        // KRAV: Om anropet använder felaktiga eller saknar
-        //parameterar skall HTTP 400 returneras.
-        describe("GET /save", function() {
-            it('should return status 400', function(done) {
-                request(endpoint + "/save").end(function(res) {
-                    res.status.should.equal(400);
-                    done();
-                });
+    // Om anropet har en omappad URL ska vi redirectas och få 200 tillbaka
+    describe("GET /about", function() {
+        it('should return status 200', function(done) {
+            request(endpoint + "/about").end(function(res) {
+                res.status.should.equal(200);
+                done();
             });
         });
+    });
 
-
-        // KRAV: Det skall finnas möjlighet att via ett HTTP-anrop till
-        // Node.js-applikationen markera ett meddelande som läst i MongoDB.
-        describe("GET /flag?ID=hexvalue", function() {
-            it('should return status 200', function(done) {
-                request(endpoint + flagPath).end(function(res) {
-                    // Vi ska få 200 tillbaka
-                    res.status.should.equal(200);
-                    done();
-                });
+       // Om anropet har en omappad URL ska vi redirectas och få 200 tillbaka
+    describe("GET /dash", function() {
+        it('should return status 200', function(done) {
+            request(endpoint + "/dash").end(function(res) {
+                res.status.should.equal(200);
+                done();
             });
         });
+    });
 
-
-        // KRAV: Om anropet använder felaktiga eller saknar
-        //parameterar skall HTTP 400 returneras.
-        describe("GET /flag", function() {
-            it('should return status 400', function(done) {
-                request(endpoint + "/flag").end(function(res) {
-                    res.status.should.equal(400);
-                    done();
-                });
+    describe("GET /explore", function() {
+        it('should return status 200', function(done) {
+            request(endpoint + "/explore").end(function(res) {
+                res.status.should.equal(200);
+                done();
             });
         });
+    });
 
-        // KRAV: Det ska vara möjligt att via HTTP-anrop till Node.js-appen
-        // få alla meddelanden som sparats i MongoDB (returneras som JSON).
-        describe('GET /getall', function() {
-            it('should return JSON', function(done) {
-                request(endpoint + "/getall").end(function(res) {
-                    console.log("\n\n\n RES: " + res.text + "\n\n\n");
-                    // Få en JSON-string
+    describe("GET /friend", function() {
+        it('should return status 200', function(done) {
+            request(endpoint + "/friend").end(function(res) {
+                res.status.should.equal(200);
+                done();
+            });
+        });
+    });
+
+    describe("GET /getUsers", function() {
+        it('should return status 200', function(done) {
+            request(endpoint + "/getUsers").end(function(res) {
+                res.status.should.equal(200);
+                if (checkJSON(res.text)){
                     checkJSON(res.text).should.equal(true);
-                    done();
-                });
+                }
+                done();
             });
         });
-        */
-});
+    });
 
+    describe("GET /register", function() {
+        it('should return status 200', function(done) {
+            request(endpoint + "/register").end(function(res) {
+                res.status.should.equal(200);
+                done();
+            });
+        });
+    });
+
+
+    describe("GET /signin", function() {
+        it('should return status 200', function(done) {
+            request(endpoint + "/signin").end(function(res) {
+                res.status.should.equal(200);
+                done();
+            });
+        });
+    });
+
+        describe("GET /start", function() {
+        it('should return status 200', function(done) {
+            request(endpoint + "/start").end(function(res) {
+                res.status.should.equal(200);
+                done();
+            });
+        });
+    });
+
+    describe("GET /update", function() {
+        it('should return status 200', function(done) {
+            request(endpoint + "/friend").end(function(res) {
+                res.status.should.equal(200);
+                if (checkJSON(res.text)){
+                    checkJSON(res.text).should.equal(true);
+                }
+                done();
+            });
+        });
+    });
+
+    describe("GET /updateFriend", function() {
+        it('should return status 200', function(done) {
+            request(endpoint + "/friend").end(function(res) {
+                res.status.should.equal(200);
+                if (checkJSON(res.text)){
+                    checkJSON(res.text).should.equal(true);
+                }
+                done();
+            });
+        });
+    });
+
+    describe("POST /removeFriend", function() {
+        it('should return status 200', function(done) {
+            request.post(endpoint + "/removeFriend").end(function(res) {
+                res.status.should.equal(200);
+                done();
+            });
+        });
+    });
+
+    describe("POST /sendMsg", function() {
+        it('should return status 200', function(done) {
+            request.post(endpoint + "/sendMsg").end(function(res) {
+                res.status.should.equal(200);
+                done();
+            });
+        });
+    });
+
+    describe("POST /authorize", function() {
+        it('should return status 401', function(done) {
+            request.post(endpoint + "/authorize")
+                .set('user', 'bar')
+                .set('pass', 'baz')
+                .end(function(res) {
+                    res.status.should.equal(401);
+                    done();
+                });
+        });
+    });
+
+    describe("POST /tryRegister", function() {
+        it('should return status 404', function(done) {
+            request.post(endpoint + "/tryRegister")
+                .set('user', 'bar')
+                .set('pass', 'baz')
+                .end(function(res) {
+                res.status.should.equal(404);
+                done();
+            });
+        });
+    });
+});
 
 // Kollar om en sträng är JSON
 function checkJSON(text) {
@@ -148,3 +225,4 @@ function checkJSON(text) {
         return false;
     }
 }
+

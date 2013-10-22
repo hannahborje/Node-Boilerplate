@@ -34,7 +34,7 @@ class ProgclubClient:
     def __init__(self, url, port):
         # Skapa en instans av Seleniums Firefox driver
         self.browser = webdriver.Firefox()
-        self.browser.implicitly_wait(5) # seconds
+        self.browser.implicitly_wait(10) # seconds
         self.org_url = url 
         self.port = port
         self.org_url += "{0}/".format(self.port)
@@ -44,15 +44,22 @@ class ProgclubClient:
         # Öppna önskad URL
         self.new_url = self.org_url + path
         logging.debug("Försöker öppna: {0} ".format(self.new_url))
-        
-        #if not self.current_url == self.org_url:
-        self.browser.get(self.new_url)
+
+        # Onödigt att ladda om sidan om det inte behövs (gör refresh() isf)
+        if not self.browser.current_url == self.new_url:
+            self.browser.get(self.new_url)
+        else:
+            logging.debug("{0} var redan öppen".format(self.new_url))
        
     
-    def assert_title(self, title):
-        error = "Sidan du begärde gick inte att ladda. "        
+    def assert_title(self, title):   
         # Kolla att sidan har laddats genom att se om titeln är vår egen
-        assert title == self.browser.title, error
+        logging.debug("Kollar sidans titel: {0} ".format(self.browser.title))
+        logging.debug("Jämför med väntad titel: {0} ".format(title))
+        if not title == self.browser.title:
+            logging.error("Stämde inte överens")
+        else:
+            logging.debug("Stämde överens")
 
     def refresh(self):
         self.browser.refresh()
@@ -60,128 +67,111 @@ class ProgclubClient:
     def quit(self):
         self.browser.quit()
 
-
-        ###########################################
-        
-    def test_incomplete_login(self, forms, path):
-        self.get_url(path)
-        # göra grejer med form
-
-
-
-    def test_faulty_login(self, forms, path):
-        pass
-
-
-        #################################3
-        
-
-
+    def logout(self, button_id):
+        button = self.browser.find_element_by_id(button_id)
+        button.click()
 
         
-    """
-    def test_tweets(self, tweets, error_msg):
-        
-        # Hitta elementet där vi komponerar tweets + publicera-knapp
-        textarea = self.browser.find_element_by_id("textarea")
-        button = self.browser.find_element_by_id("button")
-        
-        logging.info("Skapar och publicerar tweets:")
-        # lägg till default-tweeten som finns i textarean först
-        tweets.insert(0, textarea.text) 
-
-        # Skriv tweets + klicka på publicera
-        for t in tweets:
-            self.send_tweet(t, textarea, button)            
-            # Kan vi hitta tweet:en i trädet? Leta felmeddelande annars
-            caught_tweet = self.find_tweet()
-            logging.info("Hittade tweeten i trädet")
-            if not self.assert_tweet(t.strip(), caught_tweet.text.encode('utf-8')):
-                self.assert_error_msg(t, error_msg)
-            # Testa sedan kronologisk ordning
-
-    def send_tweet(self, tweet, textarea, button):
-        logging.debug("Skickar tweet: " + repr(tweet))
-        t = tweet.decode('utf-8').strip() # för ÅÄÖ
-        textarea.click() # fokus på textrutan          
-        textarea.send_keys(t) 
-        button.click() 
-
-    def find_tweet(self):
-        # find_element_by_id returnerar alltid det första/översta elementet
-        # därmed kan vi testa att det översta elementet är det vi senast skickat
-        return self.browser.find_element_by_id("tweetmsg")
-    
-    def find_tweets(self):
-        return self.browser.find_elements_by_id("tweetmsg")
-
-    def tweet_exceeds_limits(self, tweet):
-        logging.info("Kollar längd på tweeten som skickades")
-        length = len(tweet.strip())
-        logging.debug("Tweeten som skickades var: " + repr(tweet) + " \n med längd: " + str(length))  
-        return length < 1 or length > 140
-
-    def assert_tweet(self, tweet1, tweet2):
-        logging.debug("Testar matcha: " + repr(tweet1) + " mot: " + repr(tweet2))
-        if tweet1 == tweet2:
-            logging.debug("Lyckades")
-            return True
-        logging.error("Lyckades inte matcha")
-        return False
-
-    def find_error_msg(self):
-        # Felmeddelande genereras enbart om tweet är < 0 || > 140 tecken
+    def find_error_msg(self, error_id):
+        # Felmeddelande genererat om detta element hittas
         logging.info("Letar efter felmeddelande i trädet")
-        return self.browser.find_element_by_id("error")
+        return self.browser.find_element_by_id(error_id)
 
-    def assert_error_msg(self, tweet, error_msg):
-         error_msg = error_msg.decode('utf-8').strip()
-         caught_error_msg = self.find_error_msg().text
-         
-         if self.tweet_exceeds_limits(tweet):
-             logging.warning("Otillåten längd på tweet")
-             assert caught_error_msg == error_msg, "Hittade ingen tweet och inget felmeddelande"
-             logging.warning("Hittade ett felmeddelande: " + caught_error_msg)
+    def find_error_msg_class(self, error_id):
+        # Felmeddelande genererat om detta element hittas
+        logging.info("Letar efter felmeddelande i trädet")
+        return self.browser.find_element_by_class_name(error_id)
         
-    def test_checkboxes(self):
-        # Hur många bör vi hitta = antalet tweets
-        checkboxes = self.find_checkboxes()
-        num_boxes = len(checkboxes)
-        logging.debug("Letar checkboxar, hittade: " + str(num_boxes))
+    def test_bad_login(self, elements, path, error_id, credentials):
+        self.get_url(path)
+
+        # fyll i credentials i input-fälten
+        logging.info("Försöker logga in med felaktiga uppgifter")
+        for i in range(len(elements)):
+            input_element = self.browser.find_element_by_name(elements[i])
+            input_element.send_keys(credentials[i])
+        input_element.submit()
         
-        # klicka, så att de försvinner
-        if num_boxes > 0:
-            self.disable_textboxes(checkboxes)
-            self.test_checkboxes() # Kolla att de försvunnit
+        # Hitta felmeddelande
+        found_msg = self.find_error_msg(error_id).id == error_id
+        if not found_msg:
+            logging.error("Hittade inget felmeddelande")
         else:
-            # Antal bör vara 0
-            assert (num_boxes == 0), "Fel: Borde inte finnas checkboxar kvar nu"
+            logging.debug("Hittade felmeddelande")
 
-    def find_checkboxes(self):
-        return self.browser.find_elements_by_id("checkbox")
+    def test_good_login(self, elements, path,  credentials):
+        self.get_url(path)
+
+        # fyll i credentials i input-fälten
+        logging.info("Försöker logga in med bra uppgifter")
+        for i in range(len(elements)):
+            input_element = self.browser.find_element_by_name(elements[i])
+            input_element.send_keys(credentials[i])
+        input_element.submit()
+
+    def test_bad_register(self, elements, path, error_id, credentials):
+        self.get_url(path)
+
+        # fyll i credentials i input-fälten
+        logging.info("Försöker registrera med felaktiga uppgifter")
+        for i in range(len(elements)):
+            input_element = self.browser.find_element_by_name(elements[i])
+            input_element.send_keys(credentials[i])
+        input_element.submit()
         
-    def disable_textboxes(self, checkboxes):
-        for c in checkboxes:
-            c.click()
+        # Hitta felmeddelande
+        found_msg = self.find_error_msg_class(error_id)
+        if not found_msg:
+            logging.error("Hittade inget felmeddelande")
+        else:
+            logging.debug("Hittade felmeddelande")
+
+    def test_good_register(self, elements, path, credentials):
+        self.get_url(path)
+
+        # fyll i credentials i input-fälten
+        logging.info("Försöker registrera ny användare")
+        for i in range(len(elements)):
+            input_element = self.browser.find_element_by_name(elements[i])
+            input_element.send_keys(credentials[i])
+        input_element.submit()
 
 
-            
-    def test_refresh(self):
-        caught_tweets = self.find_tweets()
-        num_tweets = len(caught_tweets)
-        logging.info("Laddar om sidan")
-        logging.info("Innan omladdning finns: " + str(num_tweets) + " antal tweets")
-        self.refresh()
-        self.assert_refresh()        
+    def test_search(self, search_string, search_form_id, button_id):
+        input_element = self.browser.find_element_by_id(search_form_id)
+        input_element.send_keys(search_string)
+        input_element.submit()
 
-    def assert_refresh(self):
-        # inga poster ska hittas
-        caught_tweets = self.find_tweets()
-        num_tweets = len(caught_tweets)
-        assert (num_tweets ==  0), "Fel: Borde inte finnas tweets kvar"
-        logging.debug("Efter omladdning hittades: " + str(len(caught_tweets)) + " antal tweets")
-    """
-    
+    def test_add_friend(self, button_ids):
+        for bid in button_ids:
+            button = self.browser.find_element_by_id(bid)
+            button.click()
+
+    def test_find_friend(self, link_text):
+        link = self.browser.find_element_by_link_text(link_text)
+        link.click()
+
+    def test_post_wall(self, toggle_popup_id, textarea_id, submit_id, msg):
+        msg_btn = self.browser.find_element_by_id(toggle_popup_id)
+        msg_btn.click()
+        logging.info("Försöker skriva meddelande")
+        textarea = self.browser.find_element_by_id(textarea_id)
+        #textarea.click()
+        textarea.send_keys(msg)
+        logging.debug("Har skickat text")
+        send_btn = self.browser.find_element_by_id(submit_id)
+        send_btn.click()
+        logging.info("Har klickat på skicka meddelande-knappen")
+
+    def test_find_msg_on_wall(self, msg, msg_id):
+        logging.info("Försöker lokalisera meddelande på vägg")
+        msg_text = self.browser.find_element_by_id(msg_id)
+        msg_text = msg_text.text
+        msg_text.encode("utf-8")
+        if (msg in msg_text):
+            logging.debug("Meddelande hittat på vägg")
+        else:
+            logging.error("Meddelande ej hittat")
 
 
 
