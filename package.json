@@ -9,7 +9,7 @@
     "express": "2.5.2",
     "jade": "0.20.0",
     "mongoose": "2.4.8",
-    "express-mongoose": "0.4.0",
+    "express-mongoose": "0.0.5",
     "cors": "1.0.1",
     "socket.io": "0.8.7"
   },
